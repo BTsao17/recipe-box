@@ -12,6 +12,7 @@
   "author": "Bonnie Tsao",
   "license": "ISC",
   "devDependencies": {
+    "cors": "^2.8.5",
     "nodemon": "^1.19.4"
   },
   "dependencies": {
