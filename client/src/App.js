@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Route, Switch, Link, Redirect } from 'react-router-dom';
 import './App.css';
+import { AddRecipeForm } from './components';
 
 class App extends React.Component {
   constructor(props) {
@@ -50,11 +51,23 @@ class App extends React.Component {
           <nav>
             <ul>{navBarItems}</ul>
           </nav>
+
+          <button>
+            {/*temp link - plan to use modal pop-up*/}
+            <Link to="/newRecipe">Add New Recipe</Link>
+          </button>
+
           <Switch>
             <Route exact path="/">
               <HomeTab />
             </Route>
             {routePaths}
+
+            {/* temporary route - plan to use a modal pop-up*/}
+            <Route path="/newRecipe">
+              <AddRecipeForm />
+            </Route>
+            
             <Route path="*">
               <ErrorPage />
             </Route>
@@ -62,7 +75,7 @@ class App extends React.Component {
         </main>
 
         <footer>
-          <p>Footer</p>
+          <p>There will be a footer here.</p>
         </footer>
       </React.Fragment>
     );
@@ -75,7 +88,13 @@ function HomeTab() {
 }
 
 function RecipeTab(props) {
-  return <h2>{props.type}</h2>;
+  const { type } = props;
+  return (
+    <React.Fragment>
+      <h2>{type}</h2>
+      <p>This is the recipe page for {type.toLowerCase()}.</p>
+    </React.Fragment>
+  );
 }
 
 function ErrorPage() {
