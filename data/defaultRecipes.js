@@ -4,11 +4,16 @@ const recipes = [
     title: 'Apple Pie',
     cuisine: 'American',
     dish: 'dessert',
-    time: {
-      prep: 10,
-      cook: 25,
-      unit: 'minutes',
-    },
+    time: [
+      {
+        prep: 15,
+        unit: 'minutes',
+      },
+      {
+        cook: 30,
+        unit: 'minutes',
+      },
+    ],
     ingredients: [
       {
         name: 'apples',
@@ -46,11 +51,16 @@ const recipes = [
     title: 'Mapor Tofu',
     cuisine: 'Chinese',
     dish: 'main',
-    time: {
-      prep: 10,
-      cook: 25,
-      unit: 'minutes',
-    },
+    time: [
+      {
+        prep: 10,
+        unit: 'minutes',
+      },
+      {
+        cook: 25,
+        unit: 'minutes',
+      },
+    ],
     ingredients: [
       {
         name: 'medium-firm tofu',

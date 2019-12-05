@@ -7,7 +7,7 @@ const path = require('path');
 const cors = require('cors');
 
 //data
-const cuisines= require('./data/cuisines'); //not used in client yet.
+const cuisines = require('./data/cuisines'); 
 const dishTypes = require('./data/dishTypes');
 const recipes = require('./data/defaultRecipes');
 
@@ -19,14 +19,17 @@ app.use(
   })
 );
 
-console.log(cuisines);
 console.log(recipes[0]);
-
 
 
 
 app.get('/dishTypes', (req, res) => {
   const data = dishTypes.map((dishType) => dishType.dishType);
+  res.json(data);
+});
+
+app.get('/cuisines', (req, res) => {
+  const data = cuisines.map((cuisine) => cuisine.cuisine);
   res.json(data);
 });
 
