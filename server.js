@@ -7,8 +7,9 @@ const path = require('path');
 const cors = require('cors');
 
 //data
-const cuisines = require('./data/cuisines');
+const cuisines= require('./data/cuisines'); //not used in client yet.
 const dishTypes = require('./data/dishTypes');
+const recipes = require('./data/defaultRecipes');
 
 app.use(cors()); //for development only
 app.use(bodyParser.json());
@@ -19,7 +20,7 @@ app.use(
 );
 
 console.log(cuisines);
-console.log(dishTypes)
+console.log(recipes[0]);
 
 
 
