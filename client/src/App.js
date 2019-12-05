@@ -2,13 +2,14 @@ import React from 'react';
 import axios from 'axios';
 import { Route, Switch, Link, Redirect } from 'react-router-dom';
 import './App.css';
-import { AddRecipeForm } from './components';
+import { AddRecipeForm, RecipeTab } from './components';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       dishTypes: [],
+      cuisines: [],
     };
   }
 
@@ -16,16 +17,23 @@ class App extends React.Component {
     // Promise.all([axios.get('localhost:8080/cuisine'), axios.get('localhost:8080/dishTypes')])
 
     axios.get('http://localhost:8080/dishTypes').then((response) => {
-      console.log(response);
       this.setState({
         dishTypes: response.data,
+      });
+    });
+
+    //lists of cuisines
+    axios.get('http://localhost:8080/cuisines').then((response) => {
+      this.setState({
+        cuisines: response.data,
       });
     });
   }
 
   render() {
-    const { dishTypes } = this.state;
+    const { dishTypes, cuisines } = this.state;
 
+    //future idea: allow a toggle to choose between dishType and Cuisine tabs sorting
     const navBarItems = dishTypes.map((type) => {
       return (
         <li key={type}>
@@ -33,6 +41,7 @@ class App extends React.Component {
         </li>
       );
     });
+
     const routePaths = dishTypes.map((type) => {
       return (
         <Route path={'/' + type.toLowerCase()} key={type}>
@@ -45,6 +54,10 @@ class App extends React.Component {
       <React.Fragment>
         <header>
           <h1>Recipe Box</h1>
+          {/* not sure if there's a need for the link back to homepage  - maybe down the line, can use it as a page to list favourites*/}
+          <button>
+            <Link to="/">Home</Link>
+          </button>
         </header>
 
         <main>
@@ -54,7 +67,9 @@ class App extends React.Component {
 
           <button>
             {/*temp link - plan to use modal pop-up*/}
-            <Link to="/newRecipe">Add New Recipe</Link>
+            <Link to="/newRecipe">
+              Add New Recipe
+            </Link>
           </button>
 
           <Switch>
@@ -65,9 +80,9 @@ class App extends React.Component {
 
             {/* temporary route - plan to use a modal pop-up*/}
             <Route path="/newRecipe">
-              <AddRecipeForm />
+              <AddRecipeForm  dishTypes={dishTypes} cuisines={cuisines}/>
             </Route>
-            
+
             <Route path="*">
               <ErrorPage />
             </Route>
@@ -85,16 +100,6 @@ class App extends React.Component {
 //functional or dummy components
 function HomeTab() {
   return <h2>Home</h2>;
-}
-
-function RecipeTab(props) {
-  const { type } = props;
-  return (
-    <React.Fragment>
-      <h2>{type}</h2>
-      <p>This is the recipe page for {type.toLowerCase()}.</p>
-    </React.Fragment>
-  );
 }
 
 function ErrorPage() {
