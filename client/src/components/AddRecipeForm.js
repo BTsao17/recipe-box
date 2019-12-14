@@ -29,7 +29,16 @@ class AddRecipeForm extends React.Component {
           unit: '',
         },
       ],
-      procedure: [],
+      procedure: [
+        {
+          step: 1,
+          description: '',
+        },
+        {
+          step: 2,
+          description: '',
+        },
+      ],
       notes: [],
     };
   }
@@ -41,6 +50,7 @@ class AddRecipeForm extends React.Component {
   };
 
   //handle changes to state where it's an array
+  //figure out how to combing handle___Arr functions to make code DRY
   handleChangeTimeArr = (e) => {
     const { name, value } = e.target;
     const { type, index } = e.target.dataset; //to call for data-* custom attributes
@@ -51,8 +61,9 @@ class AddRecipeForm extends React.Component {
     //alt: json parse and stringify....an ugly solution, and doesn't copy methods, so will probably be an issue.  Look into immutability-helper
     let newArr2 = JSON.parse(JSON.stringify(this.state[type]));
     newArr2[index][name] = value;
-    console.log(this.state[type]);
-    console.log(newArr2);
+
+    // console.log(this.state[type]);
+    // console.log(newArr2);
 
     //number in the state will be a string - need to figure out how to word conditional to change to number data type.
     this.setState({
@@ -61,27 +72,35 @@ class AddRecipeForm extends React.Component {
   };
 
   handleChangeIngredArr = (e) => {
-    console.log(e.target);
-    console.log(e.target.value);
     const { name, value } = e.target;
     const { type, index } = e.target.dataset; //to call for data-* custom attributes
-    console.log(type, index, name, value);
 
     let newArr = JSON.parse(JSON.stringify(this.state[type]));
     newArr[index][name] = value;
-    console.log(newArr);
-    console.log(newArr.length);
+
     this.setState({
       [type]: newArr,
     });
   };
 
-  addMoreIngredInputs = (e) => {
-    console.log('clicked');
+  handleChangeProcedArr = (e) => {
+    const { name, value } = e.target;
+    const { type, index } = e.target.dataset;
+
+    let newArr = JSON.parse(JSON.stringify(this.state[type]));
+    newArr[index][name] = value;
+    this.setState({
+      [type]: newArr,
+    });
+  };
+
+  //figure out how to combing add___Input functions to make code DRY
+  //the differences are the variables that create empty objects, maybe have them as parameters (event, newObj)
+  addMoreIngredInput = (e) => {
     // once this is clicked, add one more object with empty values into ingredients array state
-    //generate html <ul> options to add to the rendering?
+    //generate html <ul> options to add to the rendering - ingredientsListTemplate
     const ingredientsObjTemplate = { name: '', quantity: '', unit: '' };
-    let newArr = JSON.parse(JSON.stringify(this.state.ingredients));
+    let newArr = JSON.parse(JSON.stringify(this.state.ingredients)); // let or const?
     newArr.push(ingredientsObjTemplate);
     console.log(newArr);
 
@@ -90,7 +109,20 @@ class AddRecipeForm extends React.Component {
     });
   };
 
+  addMoreStepsInput = (e) => {
+    const stepNum = [ ...this.state.procedure ].length + 1;
+    const procedureObjTemplate = { step: stepNum, description: '' };
+    let newArr = JSON.parse(JSON.stringify(this.state.procedure));
+    newArr.push(procedureObjTemplate);
+    console.log(newArr);
+
+    this.setState({
+      procedure: newArr,
+    });
+  };
+
   //datalist option is supported only in some browsers
+  //default key is set with index - may need to change once database is set
   generateListOptions = (listType) => {
     return listType.map((type) => {
       return <option key={type} value={type} />;
@@ -103,7 +135,8 @@ class AddRecipeForm extends React.Component {
     const cuisineOptions = this.generateListOptions(cuisines);
     const dishTypeOptions = this.generateListOptions(dishTypes);
 
-    let ingredientsListTemplate = this.state.ingredients.map((ingredient, index) => {
+    //default key is set with index - may need to change once database is set
+    const ingredientsListTemplate = this.state.ingredients.map((ingredient, index) => {
       return (
         <li key={index}>
           <input
@@ -131,8 +164,23 @@ class AddRecipeForm extends React.Component {
             name="name"
             type="text"
             placeholder="Ingredient"
-            onChange={this.handleChangeIngredArr}
             value={ingredient.name}
+            onChange={this.handleChangeIngredArr}
+          />
+        </li>
+      );
+    });
+
+    //default key is set with index - may need to change once database is set
+    const procedureTemplate = this.state.procedure.map((step, index) => {
+      return (
+        <li key={index}>
+          <textarea
+            data-type="procedure"
+            data-index={index}
+            name="description"
+            value={step.description}
+            onChange={this.handleChangeProcedArr}
           />
         </li>
       );
@@ -217,80 +265,27 @@ class AddRecipeForm extends React.Component {
           <br />
           Ingredients:
           <br />
-          {/* hard coded initial ingredients list
           <ul>
-            <li>
-              <input
-                data-type="ingredients"
-                data-index="0"
-                name="quantity"
-                type="number"
-                placeholder="quantity"
-                onChange={this.handleChangeIngredArr}
-                value={this.state.ingredients[0].quantity}
-              />
-              <input
-                data-type="ingredients"
-                data-index="0"
-                name="unit"
-                type="text"
-                placeholder="unit of measurement"
-                onChange={this.handleChangeIngredArr}
-                value={this.state.ingredients[0].unit}
-              />
-              may want a datalist of measurements to choose from
-              <input
-                data-type="ingredients"
-                data-index="0"
-                name="name"
-                type="text"
-                placeholder="Ingredient"
-                onChange={this.handleChangeIngredArr}
-                value={this.state.ingredients[0].name}
-              />
-            </li>
-            <li>
-              <input
-                data-type="ingredients"
-                data-index="1"
-                name="quantity"
-                type="number"
-                placeholder="quantity"
-                onChange={this.handleChangeIngredArr}
-                value={this.state.ingredients[1].quantity}
-              />
-              <input
-                data-type="ingredients"
-                data-index="1"
-                name="unit"
-                type="text"
-                placeholder="unit of measurement"
-                onChange={this.handleChangeIngredArr}
-                value={this.state.ingredients[1].unit}
-              />
-              may want a datalist of measurements to choose from
-              <input
-                data-type="ingredients"
-                data-index="1"
-                name="name"
-                type="text"
-                placeholder="Ingredient"
-                onChange={this.handleChangeIngredArr}
-                value={this.state.ingredients[1].name}
-              />
-            </li>
-          </ul> */}
-
-          {ingredientsListTemplate}
-          <input type="button" value="Add more Ingredients" onClick={this.addMoreIngredInputs} />
-
+            {ingredientsListTemplate}
+            <input type="button" value="Add more ingredients" onClick={this.addMoreIngredInput} />
+          </ul>
           <br />
           Procedure:
           <br />
+          {/* hard coded procedure. 
           <ol>
-            <li />
-            <li />
-          </ol>
+            <li>
+              <textarea
+                data-type="procedure"
+                data-index="0"
+                name="description"
+                value={this.state.procedure[0].description}
+                onChange={this.handleChangeProcedArr}
+              />
+            </li>
+          </ol> */}
+          <ol>{procedureTemplate}</ol>
+          <input type="button" value="Add more steps" onClick={this.addMoreStepsInput} />
           <br />
           Notes:
           <br />
