@@ -9,11 +9,11 @@ class AddRecipeForm extends React.Component {
       dish: '',
       time: [
         {
-          prep: 0,
+          prep: '',
           unit: 'minutes',
         },
         {
-          cook: 0,
+          cook: '',
           unit: 'minutes',
         },
       ],
@@ -39,7 +39,12 @@ class AddRecipeForm extends React.Component {
           description: '',
         },
       ],
-      notes: [],
+      notes: [
+        {
+          id: 0,
+          text: '',
+        },
+      ],
     };
   }
 
@@ -94,6 +99,18 @@ class AddRecipeForm extends React.Component {
     });
   };
 
+  //depending on how id is generated (if in DB), may be changing the structure of notes into a simple array.
+  handleChangeNotesArr = (e) => {
+    const { name, value } = e.target;
+    const { type, index } = e.target.dataset;
+
+    let newArr = JSON.parse(JSON.stringify(this.state[type]));
+    newArr[index][name] = value;
+    this.setState({
+      [type]: newArr,
+    });
+  };
+
   //figure out how to combing add___Input functions to make code DRY
   //the differences are the variables that create empty objects, maybe have them as parameters (event, newObj)
   addMoreIngredInput = (e) => {
@@ -118,6 +135,18 @@ class AddRecipeForm extends React.Component {
 
     this.setState({
       procedure: newArr,
+    });
+  };
+
+  addMoreNotesInput = (e) => {
+    const noteID = [ ...this.state.notes ].length; //temp id number based on index. May just have it generated in db in the end.
+    const noteObjTemplate = { id: noteID, text: '' };
+    let newArr = JSON.parse(JSON.stringify(this.state.notes));
+    newArr.push(noteObjTemplate);
+    console.log(newArr);
+
+    this.setState({
+      notes: newArr,
     });
   };
 
@@ -181,6 +210,20 @@ class AddRecipeForm extends React.Component {
             name="description"
             value={step.description}
             onChange={this.handleChangeProcedArr}
+          />
+        </li>
+      );
+    });
+
+    const noteTemplate = this.state.notes.map((note, index) => {
+      return (
+        <li key={index}>
+          <textarea
+            data-type="notes"
+            data-index={index}
+            name="text"
+            value={note.text}
+            onChange={this.handleChangeNotesArr}
           />
         </li>
       );
@@ -265,10 +308,8 @@ class AddRecipeForm extends React.Component {
           <br />
           Ingredients:
           <br />
-          <ul>
-            {ingredientsListTemplate}
-            <input type="button" value="Add more ingredients" onClick={this.addMoreIngredInput} />
-          </ul>
+          <ul>{ingredientsListTemplate}</ul>
+          <input type="button" value="Add more ingredients" onClick={this.addMoreIngredInput} />
           <br />
           Procedure:
           <br />
@@ -290,8 +331,21 @@ class AddRecipeForm extends React.Component {
           Notes:
           <br />
           <ul>
-            <li />
+            {/* <li>
+              <input
+                data-type="notes"
+                data-index="0"
+                name="text"
+                type="text"
+                value={this.state.notes[0].text}
+                onChange={this.handleChangeNotesArr}
+              />
+            </li> */}
+            {noteTemplate}
           </ul>
+          <input type="button" value="Add more notes" onClick={this.addMoreNotesInput} />
+          <br />
+          <button>Save Recipe</button>
         </form>
       </React.Fragment>
     );
