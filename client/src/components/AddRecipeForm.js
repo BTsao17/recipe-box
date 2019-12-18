@@ -41,7 +41,7 @@ class AddRecipeForm extends React.Component {
       ],
       notes: [
         {
-          id: 0,
+          id: 1, //arbitrary num for now. Might change once DB is set up. 
           text: '',
         },
       ],
@@ -56,44 +56,21 @@ class AddRecipeForm extends React.Component {
 
   //handle changes to state where it's an array
   //figure out how to combing handle___Arr functions to make code DRY
-  handleChangeTimeArr = (e) => {
+  handleChangeArr = (e) => {
     const { name, value } = e.target;
     const { type, index } = e.target.dataset; //to call for data-* custom attributes
-    console.log(type, index, name, value);
+    //console.log(type, index, name, value);
 
     let copyArr = [ ...this.state[type] ]; //problem is that this isn't a deep copy.
 
     //alt: json parse and stringify....an ugly solution, and doesn't copy methods, so will probably be an issue.  Look into immutability-helper
-    let newArr2 = JSON.parse(JSON.stringify(this.state[type]));
-    newArr2[index][name] = value;
+    let newArr = JSON.parse(JSON.stringify(this.state[type]));
+    newArr[index][name] = value;
 
     // console.log(this.state[type]);
     // console.log(newArr2);
 
     //number in the state will be a string - need to figure out how to word conditional to change to number data type.
-    this.setState({
-      [type]: newArr2,
-    });
-  };
-
-  handleChangeIngredArr = (e) => {
-    const { name, value } = e.target;
-    const { type, index } = e.target.dataset; //to call for data-* custom attributes
-
-    let newArr = JSON.parse(JSON.stringify(this.state[type]));
-    newArr[index][name] = value;
-
-    this.setState({
-      [type]: newArr,
-    });
-  };
-
-  handleChangeProcedArr = (e) => {
-    const { name, value } = e.target;
-    const { type, index } = e.target.dataset;
-
-    let newArr = JSON.parse(JSON.stringify(this.state[type]));
-    newArr[index][name] = value;
     this.setState({
       [type]: newArr,
     });
@@ -139,7 +116,7 @@ class AddRecipeForm extends React.Component {
   };
 
   addMoreNotesInput = (e) => {
-    const noteID = [ ...this.state.notes ].length; //temp id number based on index. May just have it generated in db in the end.
+    const noteID = [ ...this.state.notes ].length +1; //temp id number based on index. May just have it generated in db in the end.
     const noteObjTemplate = { id: noteID, text: '' };
     let newArr = JSON.parse(JSON.stringify(this.state.notes));
     newArr.push(noteObjTemplate);
@@ -149,6 +126,23 @@ class AddRecipeForm extends React.Component {
       notes: newArr,
     });
   };
+  
+  //combined addMoreNotes and addMoreProcedure functions into one. 
+  addMoreInput = (e, type, template) => {
+    const refNum = [...this.state[type]].length +1;
+    const keys = Object.keys(template);
+    template[keys[0]] = refNum;
+    console.log(template);
+
+    const newArr = JSON.parse(JSON.stringify(this.state[type]));
+    newArr.push(template);
+    console.log(newArr)
+
+    this.setState({
+      [type]: newArr
+    })
+
+  }
 
   //datalist option is supported only in some browsers
   //default key is set with index - may need to change once database is set
@@ -174,7 +168,7 @@ class AddRecipeForm extends React.Component {
             name="quantity"
             type="text"
             placeholder="quantity"
-            onChange={this.handleChangeIngredArr}
+            onChange={this.handleChangeArr}
             value={ingredient.quantity}
           />
           <input
@@ -183,7 +177,7 @@ class AddRecipeForm extends React.Component {
             name="unit"
             type="text"
             placeholder="unit of measurement"
-            onChange={this.handleChangeIngredArr}
+            onChange={this.handleChangeArr}
             value={ingredient.unit}
           />
           {/* may want a datalist of measurements to choose from */}
@@ -194,13 +188,13 @@ class AddRecipeForm extends React.Component {
             type="text"
             placeholder="Ingredient"
             value={ingredient.name}
-            onChange={this.handleChangeIngredArr}
+            onChange={this.handleChangeArr}
           />
         </li>
       );
     });
 
-    //default key is set with index - may need to change once database is set
+    //default key is set with index - may need to change once database is set, key will be primary key
     const procedureTemplate = this.state.procedure.map((step, index) => {
       return (
         <li key={index}>
@@ -209,12 +203,13 @@ class AddRecipeForm extends React.Component {
             data-index={index}
             name="description"
             value={step.description}
-            onChange={this.handleChangeProcedArr}
+            onChange={this.handleChangeArr}
           />
         </li>
       );
     });
 
+    //default key is set with index - may need to change once database is set, key will be primary key
     const noteTemplate = this.state.notes.map((note, index) => {
       return (
         <li key={index}>
@@ -272,14 +267,14 @@ class AddRecipeForm extends React.Component {
             type="number"
             min="0"
             value={this.state.time[0].prep}
-            onChange={this.handleChangeTimeArr}
+            onChange={this.handleChangeArr}
           />
           <select
             data-type="time"
             data-index="0"
             name="unit"
             value={this.state.time[0].unit}
-            onChange={this.handleChangeTimeArr}
+            onChange={this.handleChangeArr}
           >
             <option value="minutes">minutes</option>
             <option value="hours">hours</option>
@@ -293,14 +288,14 @@ class AddRecipeForm extends React.Component {
             type="number"
             min="0"
             value={this.state.time[1].cook}
-            onChange={this.handleChangeTimeArr}
+            onChange={this.handleChangeArr}
           />
           <select
             data-type="time"
             data-index="1"
             name="unit"
             value={this.state.time[1].unit}
-            onChange={this.handleChangeTimeArr}
+            onChange={this.handleChangeArr}
           >
             <option value="minutes">minutes</option>
             <option value="hours">hours</option>
@@ -313,37 +308,15 @@ class AddRecipeForm extends React.Component {
           <br />
           Procedure:
           <br />
-          {/* hard coded procedure. 
-          <ol>
-            <li>
-              <textarea
-                data-type="procedure"
-                data-index="0"
-                name="description"
-                value={this.state.procedure[0].description}
-                onChange={this.handleChangeProcedArr}
-              />
-            </li>
-          </ol> */}
           <ol>{procedureTemplate}</ol>
-          <input type="button" value="Add more steps" onClick={this.addMoreStepsInput} />
+          <input type="button" value="Add more steps" onClick={(e) => this.addMoreInput(e, 'procedure', {step:undefined, description:''})} />
           <br />
           Notes:
           <br />
           <ul>
-            {/* <li>
-              <input
-                data-type="notes"
-                data-index="0"
-                name="text"
-                type="text"
-                value={this.state.notes[0].text}
-                onChange={this.handleChangeNotesArr}
-              />
-            </li> */}
             {noteTemplate}
           </ul>
-          <input type="button" value="Add more notes" onClick={this.addMoreNotesInput} />
+          <input type="button" value="Add more notes" onClick={(e) => this.addMoreInput(e, 'notes', {id:undefined, text:''})} />
           <br />
           <button>Save Recipe</button>
         </form>
