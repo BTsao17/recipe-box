@@ -10,6 +10,7 @@ class App extends React.Component {
     this.state = {
       dishTypes: [],
       cuisines: [],
+      recipeTitles: [],
     };
   }
 
@@ -29,6 +30,25 @@ class App extends React.Component {
       });
     });
   }
+
+  saveRecipe = (newRecipe) => {
+    //need to temp provide an id # for recipe, til db is set up.
+    const data = { ...newRecipe };
+    data.id = Math.floor(Math.random() * 1000);
+
+    //API post req to server, response and then setState for a new arr of recipes
+    axios
+      .post('http://localhost:8080/recipes', data)
+      .then((response) => {
+        const newTitles = response.data;
+        this.setState({
+          recipeTitles: newTitles,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   render() {
     const { dishTypes, cuisines } = this.state;
@@ -80,7 +100,7 @@ class App extends React.Component {
 
             {/* temporary route - plan to use a modal pop-up*/}
             <Route path="/newRecipe">
-              <AddRecipeForm  dishTypes={dishTypes} cuisines={cuisines}/>
+              <AddRecipeForm dishTypes={dishTypes} cuisines={cuisines} saveRecipe={this.saveRecipe} />
             </Route>
 
             <Route path="*">

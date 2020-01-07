@@ -41,7 +41,7 @@ class AddRecipeForm extends React.Component {
       ],
       notes: [
         {
-          id: 1, //arbitrary num for now. Might change once DB is set up. 
+          id: 1, //arbitrary num for now. Might change once DB is set up.
           text: '',
         },
       ],
@@ -116,7 +116,7 @@ class AddRecipeForm extends React.Component {
   };
 
   addMoreNotesInput = (e) => {
-    const noteID = [ ...this.state.notes ].length +1; //temp id number based on index. May just have it generated in db in the end.
+    const noteID = [ ...this.state.notes ].length + 1; //temp id number based on index. May just have it generated in db in the end.
     const noteObjTemplate = { id: noteID, text: '' };
     let newArr = JSON.parse(JSON.stringify(this.state.notes));
     newArr.push(noteObjTemplate);
@@ -126,23 +126,71 @@ class AddRecipeForm extends React.Component {
       notes: newArr,
     });
   };
-  
-  //combined addMoreNotes and addMoreProcedure functions into one. 
+
+  //combined addMoreNotes and addMoreSteps functions into one.
   addMoreInput = (e, type, template) => {
-    const refNum = [...this.state[type]].length +1;
+    const refNum = [ ...this.state[type] ].length + 1;
     const keys = Object.keys(template);
     template[keys[0]] = refNum;
     console.log(template);
 
     const newArr = JSON.parse(JSON.stringify(this.state[type]));
     newArr.push(template);
-    console.log(newArr)
+    console.log(newArr);
 
     this.setState({
-      [type]: newArr
-    })
+      [type]: newArr,
+    });
+  };
 
-  }
+  handeleSubmit = (e) => {
+    e.preventDefault();
+    const newRecipe = this.state;
+    this.props.saveRecipe(newRecipe);
+    this.setState({
+      title: '',
+      cuisine: '',
+      dish: '',
+      time: [
+        {
+          prep: '',
+          unit: 'minutes',
+        },
+        {
+          cook: '',
+          unit: 'minutes',
+        },
+      ],
+      ingredients: [
+        {
+          name: '',
+          quantity: '',
+          unit: '',
+        },
+        {
+          name: '',
+          quantity: '',
+          unit: '',
+        },
+      ],
+      procedure: [
+        {
+          step: 1,
+          description: '',
+        },
+        {
+          step: 2,
+          description: '',
+        },
+      ],
+      notes: [
+        {
+          id: 1,
+          text: '',
+        },
+      ],
+    });
+  };
 
   //datalist option is supported only in some browsers
   //default key is set with index - may need to change once database is set
@@ -166,7 +214,7 @@ class AddRecipeForm extends React.Component {
             data-type="ingredients"
             data-index={index}
             name="quantity"
-            type="text"
+            type="text" //better if the type is number, but when set state, it automatically becomes a string.
             placeholder="quantity"
             onChange={this.handleChangeArr}
             value={ingredient.quantity}
@@ -227,7 +275,7 @@ class AddRecipeForm extends React.Component {
     return (
       <React.Fragment>
         <h1>Recipe Form</h1>
-        <form>
+        <form id="newRecipe">
           Title:
           <input
             name="title"
@@ -309,16 +357,24 @@ class AddRecipeForm extends React.Component {
           Procedure:
           <br />
           <ol>{procedureTemplate}</ol>
-          <input type="button" value="Add more steps" onClick={(e) => this.addMoreInput(e, 'procedure', {step:undefined, description:''})} />
+          <input
+            type="button"
+            value="Add more steps"
+            onClick={(e) => this.addMoreInput(e, 'procedure', { step: undefined, description: '' })}
+          />
           <br />
           Notes:
           <br />
-          <ul>
-            {noteTemplate}
-          </ul>
-          <input type="button" value="Add more notes" onClick={(e) => this.addMoreInput(e, 'notes', {id:undefined, text:''})} />
+          <ul>{noteTemplate}</ul>
+          <input
+            type="button"
+            value="Add more notes"
+            onClick={(e) => this.addMoreInput(e, 'notes', { id: undefined, text: '' })}
+          />
           <br />
-          <button>Save Recipe</button>
+          <button form="newRecipe" type="submit" onClick={this.handeleSubmit}>
+            Save Recipe
+          </button>
         </form>
       </React.Fragment>
     );

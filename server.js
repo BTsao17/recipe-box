@@ -19,8 +19,6 @@ app.use(
   })
 );
 
-console.log(recipes[0]);
-
 
 
 app.get('/dishTypes', (req, res) => {
@@ -32,6 +30,15 @@ app.get('/cuisines', (req, res) => {
   const data = cuisines.map((cuisine) => cuisine.cuisine);
   res.json(data);
 });
+
+app.post('/recipes', (req, res) => {
+  const newRecipe = req.body;
+  //save recipe to array of recipes
+  recipes.push(newRecipe);
+  //retrieve ALL recipe titles only (rather than just the new one) to send back
+  const titles = recipes.map((recipe) => recipe.title)
+  res.json(titles);
+})
 
 app.listen(port, () => {
   console.log(`server listening at ${port}`);
