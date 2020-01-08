@@ -17,7 +17,7 @@ class AddRecipeForm extends React.Component {
           unit: 'minutes',
         },
       ],
-      ingredients: [
+      ingredients: [//not sure how id will work, or if it's needed. 
         {
           name: '',
           quantity: '',
@@ -29,7 +29,7 @@ class AddRecipeForm extends React.Component {
           unit: '',
         },
       ],
-      procedure: [
+      procedure: [//might need id in the future?
         {
           step: 1,
           description: '',
@@ -76,7 +76,7 @@ class AddRecipeForm extends React.Component {
     });
   };
 
-  //depending on how id is generated (if in DB), may be changing the structure of notes into a simple array.
+  //depending on how id is generated (if in DB), may be changing the structure of notes into a simple array. that's why it's a separate function.
   handleChangeNotesArr = (e) => {
     const { name, value } = e.target;
     const { type, index } = e.target.dataset;
