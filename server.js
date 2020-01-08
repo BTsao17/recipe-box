@@ -35,9 +35,11 @@ app.post('/recipes', (req, res) => {
   const newRecipe = req.body;
   //save recipe to array of recipes
   recipes.push(newRecipe);
-  //retrieve ALL recipe titles only (rather than just the new one) to send back
-  const titles = recipes.map((recipe) => recipe.title)
-  res.json(titles);
+  //retrieve  new recipe title and id to send back
+  //anonymous function is evoked immediately 
+  //without object destructuring: ((recipe) => ({title:recipe.title, id: recipe.id}))(newRecipe)
+  const titleID = (({title, id}) => ({title, id}))(newRecipe);  
+  res.json(titleID);
 })
 
 app.listen(port, () => {

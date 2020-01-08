@@ -10,7 +10,7 @@ class App extends React.Component {
     this.state = {
       dishTypes: [],
       cuisines: [],
-      recipeTitles: [],
+      recipeTitleIDList: [],
     };
   }
 
@@ -40,9 +40,10 @@ class App extends React.Component {
     axios
       .post('http://localhost:8080/recipes', data)
       .then((response) => {
-        const newTitles = response.data;
+        const newTitleID = response.data;
+        const newList = [...this.state.recipeTitleIDList].concat(newTitleID);
         this.setState({
-          recipeTitles: newTitles,
+          recipeTitleIDList: newList
         });
       })
       .catch((err) => {
