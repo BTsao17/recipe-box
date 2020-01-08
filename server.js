@@ -31,7 +31,7 @@ app.get('/cuisines', (req, res) => {
 
 app.get('/recipeList', (req, res) => {
   const titleIDs = recipes.reduce((acc, cV) => {
-    const recipeTitleID = ((recipe) => ({ title: recipe.title, id: recipe.id }))(cV);
+    const recipeTitleID = ((recipe) => ({ title: recipe.title, id: recipe.id, dish: recipe.dish }))(cV);
     acc.push(recipeTitleID);
     return acc;
   }, []);
@@ -51,10 +51,11 @@ app.post('/recipes', (req, res) => {
   const newRecipe = req.body;
   //save recipe to array of recipes
   recipes.push(newRecipe);
-  //retrieve  new recipe title and id to send back
+  console.log(recipes);
+  //retrieve  new recipe title, id, and dish to send back (rather than the entire recipe list);
   //anonymous function is evoked immediately
   //without object destructuring: ((recipe) => ({title:recipe.title, id: recipe.id}))(newRecipe)
-  const titleID = (({ title, id }) => ({ title, id }))(newRecipe);
+  const titleID = (({ title, id, dish }) => ({ title, id, dish }))(newRecipe);
   res.json(titleID);
 });
 
