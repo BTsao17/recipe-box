@@ -29,6 +29,14 @@ class App extends React.Component {
         cuisines: response.data,
       });
     });
+
+    //list of recipe titles
+    axios.get('http://localhost:8080/recipeList').then((response) => {
+      console.log("initial default recipes:", response.data);
+      this.setState({
+        recipeTitleIDList: response.data,
+      });
+    });
   }
 
   saveRecipe = (newRecipe) => {
@@ -41,9 +49,9 @@ class App extends React.Component {
       .post('http://localhost:8080/recipes', data)
       .then((response) => {
         const newTitleID = response.data;
-        const newList = [...this.state.recipeTitleIDList].concat(newTitleID);
+        const newList = [ ...this.state.recipeTitleIDList ].concat(newTitleID);
         this.setState({
-          recipeTitleIDList: newList
+          recipeTitleIDList: newList,
         });
       })
       .catch((err) => {
@@ -88,9 +96,7 @@ class App extends React.Component {
 
           <button>
             {/*temp link - plan to use modal pop-up*/}
-            <Link to="/newRecipe">
-              Add New Recipe
-            </Link>
+            <Link to="/newRecipe">Add New Recipe</Link>
           </button>
 
           <Switch>
