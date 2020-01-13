@@ -29,6 +29,7 @@ app.get('/cuisines', (req, res) => {
   res.json(data);
 });
 
+// ***recipeList might be unnecessary for App.js.
 app.get('/recipeList', (req, res) => {
   const titleIDs = recipes.reduce((acc, cV) => {
     const recipeTitleID = ((recipe) => ({ title: recipe.title, id: recipe.id, dish: recipe.dish }))(cV);
@@ -46,6 +47,21 @@ app.get('/recipeList', (req, res) => {
 
   res.json(titleIDs);
 });
+
+//recipeList based on dishType selected
+app.get('/:type', (req, res) => {
+  const type = req.params.type.toLowerCase();
+  const recipeList = recipes.reduce((acc, cV) => {
+    if (cV.dish === type) {
+      const recipeTitleID = (({ title, id }) => ({ title, id }))(cV);
+      acc.push(recipeTitleID);
+    }
+    return acc;
+  }, []);
+  console.log(recipeList);
+  res.json(recipeList);
+});
+
 
 app.post('/recipes', (req, res) => {
   const newRecipe = req.body;

@@ -48,9 +48,9 @@ const recipes = [
   },
   {
     id: 2,
-    title: 'Mapor Tofu',
+    title: 'Mapo Tofu',
     cuisine: 'Chinese',
-    dish: 'main',
+    dish: 'vegetables',
     time: [
       {
         prep: 10,

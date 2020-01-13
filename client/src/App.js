@@ -10,29 +10,39 @@ class App extends React.Component {
     this.state = {
       dishTypes: [],
       cuisines: [],
-      recipeTitleIDList: [],
+      recipeTitleIDList: [], //no longer sure if I need the recipe list here at all.
     };
   }
 
   componentDidMount() {
     // Promise.all([axios.get('localhost:8080/cuisine'), axios.get('localhost:8080/dishTypes')])
 
-    axios.get('http://localhost:8080/dishTypes').then((response) => {
-      this.setState({
-        dishTypes: response.data,
+    axios
+      .get('http://localhost:8080/dishTypes')
+      .then((response) => {
+        this.setState({
+          dishTypes: response.data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    });
 
     //lists of cuisines
-    axios.get('http://localhost:8080/cuisines').then((response) => {
-      this.setState({
-        cuisines: response.data,
+    axios
+      .get('http://localhost:8080/cuisines')
+      .then((response) => {
+        this.setState({
+          cuisines: response.data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    });
 
-    //list of recipe titles
+    //list of recipe titles - unnecessary?
     axios.get('http://localhost:8080/recipeList').then((response) => {
-      console.log("initial default recipes:", response.data);
+      console.log('initial default recipes:', response.data);
       this.setState({
         recipeTitleIDList: response.data,
       });
@@ -44,6 +54,10 @@ class App extends React.Component {
     const data = { ...newRecipe };
     data.id = Math.floor(Math.random() * 1000);
 
+    //make sure all cuisine and dish data are in the correct case.
+    data.dish = data.dish.toLowerCase(); //all lowercase
+    data.cuisine = data.cuisine.charAt(0).toUpperCase() + data.cuisine.slice(1); //first letter is uppercase
+
     //API post req to server, response and then setState for a new arr of recipes
     axios
       .post('http://localhost:8080/recipes', data)
@@ -53,6 +67,7 @@ class App extends React.Component {
         this.setState({
           recipeTitleIDList: newList,
         });
+        console.log(this.state.recipeTitleIDList);
       })
       .catch((err) => {
         console.log(err);
@@ -60,24 +75,27 @@ class App extends React.Component {
   };
 
   render() {
-    const { dishTypes, cuisines } = this.state;
+    const { dishTypes, cuisines, recipeTitleIDList } = this.state;
 
     //future idea: allow a toggle to choose between dishType and Cuisine tabs sorting
     const navBarItems = dishTypes.map((type) => {
       return (
         <li key={type}>
-          <Link to={type.toLowerCase()}>{type}</Link>
+          <Link to={type}>{type}</Link>
         </li>
       );
     });
 
-    const routePaths = dishTypes.map((type) => {
-      return (
-        <Route path={'/' + type.toLowerCase()} key={type}>
-          <RecipeTab type={type} />
-        </Route>
-      );
-    });
+    //routePaths is used with static <Route>
+    // const routePaths = dishTypes.map((dish) => {
+    //   const recipesByType = recipeTitleIDList.filter((recipe) => recipe.dish === dish.toLowerCase());
+    //   console.log(`${dish}:`, recipesByType);
+    //   return (
+    //     <Route path={'/' + dish.toLowerCase()} key={dish}>
+    //       <RecipeTab type={dish} recipes={recipesByType} />
+    //     </Route>
+    //   );
+    // });
 
     return (
       <React.Fragment>
@@ -100,19 +118,32 @@ class App extends React.Component {
           </button>
 
           <Switch>
-            <Route exact path="/">
+            {/* creating routes with static urls, thus error page is able to be used here. this method of using child elements with <Route> goes in hand with React Hooks */}
+
+            {/* <Route exact path="/">
               <HomeTab />
             </Route>
             {routePaths}
 
-            {/* temporary route - plan to use a modal pop-up*/}
+            temporary route - plan to use a modal pop-up
             <Route path="/newRecipe">
               <AddRecipeForm dishTypes={dishTypes} cuisines={cuisines} saveRecipe={this.saveRecipe} />
             </Route>
 
             <Route path="*">
               <ErrorPage />
-            </Route>
+            </Route> */}
+
+            {/* Not using React Hooks */}
+            <Route exact path="/" render={() => <HomeTab />} />
+
+            <Route
+              path="/newRecipe"
+              render={() => <AddRecipeForm dishTypes={dishTypes} cuisines={cuisines} saveRecipe={this.saveRecipe} />}
+            />
+
+            {/* dynamic pages */}
+            <Route path="/:type" render={(routeProps) => <RecipeTab dishTypes={dishTypes} {...routeProps} />} />
           </Switch>
         </main>
 
@@ -129,13 +160,13 @@ function HomeTab() {
   return <h2>Home</h2>;
 }
 
-function ErrorPage() {
-  return (
-    <React.Fragment>
-      <h2>404</h2>
-      <p>The page you are looking for cannot be found.</p>
-    </React.Fragment>
-  );
-}
+// function ErrorPage() {
+//   return (
+//     <React.Fragment>
+//       <h2>404</h2>
+//       <p>The page you are looking for cannot be found.</p>
+//     </React.Fragment>
+//   );
+// }
 
 export default App;
