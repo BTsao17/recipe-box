@@ -4,7 +4,7 @@ import { Route, Switch, Link, Redirect } from 'react-router-dom';
 
 // function component alternative
 /*
-function RecipeTab(props) {
+function RecipeTabTemplate(props) {
   const { type } = props;
   return (
     <React.Fragment>
@@ -15,7 +15,7 @@ function RecipeTab(props) {
 }
 */
 
-class RecipeTab extends React.Component {
+class RecipeTabTemplate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,6 +35,8 @@ class RecipeTab extends React.Component {
 
   getPageData = () => {
     const { type } = this.props.match.params;
+    console.log('dishtype info:', this.props.match)
+
     axios
       .get(`http://localhost:8080/${type}`)
       .then((response) => {
@@ -50,18 +52,17 @@ class RecipeTab extends React.Component {
 
   render() {
     // const {type, recipes} = this.props;
-    const { dishTypes } = this.props;
-    const dishType = this.props.match.params.type;
+    const { match, dishTypes } = this.props;
+    const dishType = match.params.type;
 
     const recipeLinks = this.state.recipeList.map((recipe) => {
+      const recipeTitleDash = recipe.title.toLowerCase().split(' ').join('-');
       return (
         <li key={recipe.id}>
-          <Link to={recipe.title}>{recipe.title}</Link>
+          <Link to={`${match.url}/${recipe.id}/${recipeTitleDash}`}>{recipe.title}</Link>
         </li>
-      )
-    })
-
-    const recipePaths = null;
+      );
+    });
 
     //conditional rendering - 404 error page
     if (!dishTypes.includes(dishType)) {
@@ -84,10 +85,20 @@ class RecipeTab extends React.Component {
           <p>Listing Links:</p>
           {/* conditional rendering of list, only has bullets if recipes list has items */}
           {this.state.recipeList.length !== 0 && <ul>{recipeLinks}</ul>}
+
+          <Switch>
+            <Route path={`${match.path}/:id/:recipe`} render={(routeProps) => <RecipeDetailsTemplate {...routeProps} />} />
+          </Switch>
+
         </React.Fragment>
       );
     }
   }
 }
 
-export default RecipeTab;
+function RecipeDetailsTemplate(props) {
+  console.log("recipe dets info",props.match);
+  return <h2>Recipe Details placeholder - {props.match.params.recipe}</h2>;
+}
+
+export default RecipeTabTemplate;
