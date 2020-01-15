@@ -58,7 +58,7 @@ class App extends React.Component {
     data.dish = data.dish.toLowerCase(); //all lowercase
     data.cuisine = data.cuisine.charAt(0).toUpperCase() + data.cuisine.slice(1); //first letter is uppercase
 
-    //API post req to server, response and then setState for a new arr of recipes
+    //API post req to server, response is only the new recipe
     axios
       .post('http://localhost:8080/recipes', data)
       .then((response) => {
@@ -86,17 +86,6 @@ class App extends React.Component {
       );
     });
 
-    //routePaths is used with static <Route>
-    // const routePaths = dishTypes.map((dish) => {
-    //   const recipesByType = recipeTitleIDList.filter((recipe) => recipe.dish === dish.toLowerCase());
-    //   console.log(`${dish}:`, recipesByType);
-    //   return (
-    //     <Route path={'/' + dish.toLowerCase()} key={dish}>
-    //       <RecipeTab type={dish} recipes={recipesByType} />
-    //     </Route>
-    //   );
-    // });
-
     return (
       <React.Fragment>
         <header>
@@ -118,21 +107,6 @@ class App extends React.Component {
           </button>
 
           <Switch>
-            {/* creating routes with static urls, thus error page is able to be used here. this method of using child elements with <Route> goes in hand with React Hooks */}
-
-            {/* <Route exact path="/">
-              <HomeTab />
-            </Route>
-            {routePaths}
-
-            temporary route - plan to use a modal pop-up
-            <Route path="/newRecipe">
-              <AddRecipeForm dishTypes={dishTypes} cuisines={cuisines} saveRecipe={this.saveRecipe} />
-            </Route>
-
-            <Route path="*">
-              <ErrorPage />
-            </Route> */}
 
             {/* Not using React Hooks */}
             <Route exact path="/" render={() => <HomeTab />} />
@@ -159,14 +133,5 @@ class App extends React.Component {
 function HomeTab() {
   return <h2>Home</h2>;
 }
-
-// function ErrorPage() {
-//   return (
-//     <React.Fragment>
-//       <h2>404</h2>
-//       <p>The page you are looking for cannot be found.</p>
-//     </React.Fragment>
-//   );
-// }
 
 export default App;

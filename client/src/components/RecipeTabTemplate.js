@@ -52,7 +52,6 @@ class RecipeTabTemplate extends React.Component {
   };
 
   render() {
-    // const {type, recipes} = this.props;
     const { match, dishTypes } = this.props;
     const dishType = match.params.type;
 
@@ -77,10 +76,6 @@ class RecipeTabTemplate extends React.Component {
     else {
       return (
         <React.Fragment>
-          {/* <h2>{type}</h2>
-          <p>This is the recipe page for {type.toLowerCase()}.</p>
-          <p>listing links:</p> */}
-
           <h2>{dishType}</h2>
           <p>This is the recipe page for {dishType.toLowerCase()}.</p>
           <p>Listing Links:</p>
@@ -98,10 +93,5 @@ class RecipeTabTemplate extends React.Component {
     }
   }
 }
-
-// function RecipeDetailsTemplate(props) {
-//   console.log("recipe dets info",props.match);
-//   return <h2>Recipe Details placeholder - {props.match.params.recipe}</h2>;
-// }
 
 export default RecipeTabTemplate;
