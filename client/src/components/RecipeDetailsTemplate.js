@@ -10,13 +10,30 @@ import { Route, Switch, Link, Redirect } from 'react-router-dom';
 class RecipeDetailsTemplate extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      recipe: {},
+    };
+  }
+
+  componentDidMount() {
+    const { match } = this.props;
+    console.log(match);
+    const dishType = match.params.type; //only needed if the endpoint was /${dishType}/${recipeID}
+    const recipeID = match.params.id; //a string, not number
+
+    axios.get(`http://localhost:8080/recipe/${recipeID}`).then((response) => {
+      console.log(response.data);
+      this.setState({
+        recipe: response.data,
+      });
+    });
   }
 
   render() {
     return (
       <React.Fragment>
-        <h2>Recipe Details placeholder - {this.props.match.params.recipe}</h2>
+        <h2>Recipe Details placeholder: {this.state.recipe.title}</h2>
+        <div>Cuisine:{this.state.recipe.cuisine}</div>
       </React.Fragment>
     );
   }

@@ -58,12 +58,30 @@ app.get('/:type', (req, res) => {
     }
     return acc;
   }, []);
+
   console.log(recipeList);
+
   res.json(recipeList);
 });
 
+//recipeDetails, given the id
+app.get('/recipe/:id', (req, res) => {
+  //alt: '/:type/:id' if you also want to use the dish type to filter
+  //const type = req.params.type.toLowerCase();
+  const recipeID = parseInt(req.params.id);
 
-app.post('/recipes', (req, res) => {
+  console.log( recipeID);
+
+  //query will change once db is set up for sure.
+  const recipeDetails = recipes.find((recipe) => recipe.id === recipeID);
+
+  console.log(recipeDetails);
+
+  res.json(recipeDetails);
+});
+
+//add new recipe
+app.post('/recipe', (req, res) => {
   const newRecipe = req.body;
   //save recipe to array of recipes
   recipes.push(newRecipe);
