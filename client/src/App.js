@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Route, Switch, Link, Redirect } from 'react-router-dom';
 import './App.css';
-import { AddRecipeForm, RecipeTab } from './components';
+import { AddRecipeForm, RecipeTabTemplate } from './components';
 
 class App extends React.Component {
   constructor(props) {
@@ -78,10 +78,10 @@ class App extends React.Component {
     const { dishTypes, cuisines, recipeTitleIDList } = this.state;
 
     //future idea: allow a toggle to choose between dishType and Cuisine tabs sorting
-    const navBarItems = dishTypes.map((type) => {
+    const navBarLinks = dishTypes.map((type) => {
       return (
         <li key={type}>
-          <Link to={type}>{type}</Link>
+          <Link to={`/${type}`}>{type}</Link>
         </li>
       );
     });
@@ -109,7 +109,7 @@ class App extends React.Component {
 
         <main>
           <nav>
-            <ul>{navBarItems}</ul>
+            <ul>{navBarLinks}</ul>
           </nav>
 
           <button>
@@ -143,7 +143,7 @@ class App extends React.Component {
             />
 
             {/* dynamic pages */}
-            <Route path="/:type" render={(routeProps) => <RecipeTab dishTypes={dishTypes} {...routeProps} />} />
+            <Route path="/:type" render={(routeProps) => <RecipeTabTemplate dishTypes={dishTypes} {...routeProps} />} />
           </Switch>
         </main>
 
