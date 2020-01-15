@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Route, Switch, Link, Redirect } from 'react-router-dom';
+import { RecipeDetailsTemplate } from '.';
 
 // function component alternative
 /*
@@ -35,7 +36,7 @@ class RecipeTabTemplate extends React.Component {
 
   getPageData = () => {
     const { type } = this.props.match.params;
-    console.log('dishtype info:', this.props.match)
+    console.log('dishtype info:', this.props.match);
 
     axios
       .get(`http://localhost:8080/${type}`)
@@ -87,18 +88,20 @@ class RecipeTabTemplate extends React.Component {
           {this.state.recipeList.length !== 0 && <ul>{recipeLinks}</ul>}
 
           <Switch>
-            <Route path={`${match.path}/:id/:recipe`} render={(routeProps) => <RecipeDetailsTemplate {...routeProps} />} />
+            <Route
+              path={`${match.path}/:id/:recipe`}
+              render={(routeProps) => <RecipeDetailsTemplate {...routeProps} />}
+            />
           </Switch>
-
         </React.Fragment>
       );
     }
   }
 }
 
-function RecipeDetailsTemplate(props) {
-  console.log("recipe dets info",props.match);
-  return <h2>Recipe Details placeholder - {props.match.params.recipe}</h2>;
-}
+// function RecipeDetailsTemplate(props) {
+//   console.log("recipe dets info",props.match);
+//   return <h2>Recipe Details placeholder - {props.match.params.recipe}</h2>;
+// }
 
 export default RecipeTabTemplate;

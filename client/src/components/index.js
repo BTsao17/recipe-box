@@ -1,6 +1,7 @@
 import AddRecipeForm from './AddRecipeForm';
-import RecipeTab from './RecipeTabTemplate';
+import RecipeTabTemplate from './RecipeTabTemplate';
+import RecipeDetailsTemplate from './RecipeDetailsTemplate';
 
 export {
-  AddRecipeForm, RecipeTab
+  AddRecipeForm, RecipeTabTemplate, RecipeDetailsTemplate
 }; 
