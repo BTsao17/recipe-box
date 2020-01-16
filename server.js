@@ -65,17 +65,24 @@ app.get('/:type', (req, res) => {
 });
 
 //recipeDetails, given the id
-app.get('/recipe/:id', (req, res) => {
-  //alt: '/:type/:id' if you also want to use the dish type to filter
-  //const type = req.params.type.toLowerCase();
+app.get('/recipe/:type/:id/:title', (req, res) => {
+  //specific query to allow for easier url validation.
   const recipeID = parseInt(req.params.id);
+  const dishType = req.params.type.toLowerCase();
+  const recipeTitle = req.params.title.split('-').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 
-  console.log( recipeID);
+  console.log(recipeID, dishType, recipeTitle);
 
   //query will change once db is set up for sure.
-  const recipeDetails = recipes.find((recipe) => recipe.id === recipeID);
+  let recipeDetails = recipes.find(
+    (recipe) => recipe.id === recipeID && recipe.dish === dishType && recipe.title === recipeTitle
+  );
 
   console.log(recipeDetails);
+  
+  if (recipeDetails === undefined) {
+    recipeDetails = {};
+  }
 
   res.json(recipeDetails);
 });

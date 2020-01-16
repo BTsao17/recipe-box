@@ -10,7 +10,7 @@ class App extends React.Component {
     this.state = {
       dishTypes: [],
       cuisines: [],
-      recipeTitleIDList: [], //no longer sure if I need the recipe list here at all.
+      recipeTitleIDList: [], //no longer sure if I need the recipe list here at all, unless to display favourties?
     };
   }
 
@@ -40,7 +40,7 @@ class App extends React.Component {
         console.log(err);
       });
 
-    //list of recipe titles - unnecessary?
+    //list of recipe titles - maybe favourites?
     axios.get('http://localhost:8080/recipeList').then((response) => {
       console.log('initial default recipes:', response.data);
       this.setState({
@@ -111,6 +111,7 @@ class App extends React.Component {
             <Route exact path="/" render={() => <HomeTab />} />
 
             <Route
+              exact
               path="/newRecipe"
               render={() => <AddRecipeForm dishTypes={dishTypes} cuisines={cuisines} saveRecipe={this.saveRecipe} />}
             />
@@ -122,7 +123,10 @@ class App extends React.Component {
               render={(routeProps) => <RecipeTabTemplate dishTypes={dishTypes} {...routeProps} />}
             />
 
-            <Route path={`/:type/:id/:recipe`} render={(routeProps) => <RecipeDetailsTemplate {...routeProps} />} />
+            <Route exact path="/:type/:id/:recipe" render={(routeProps) => <RecipeDetailsTemplate {...routeProps} />} />
+
+            {/* catch all error page for random url inputs  */}
+            <Route path="*" render={() => <Error />} />
           </Switch>
         </main>
 
@@ -137,6 +141,15 @@ class App extends React.Component {
 //functional or dummy components
 function HomeTab() {
   return <h2>Home</h2>;
+}
+
+function Error() {
+  return (
+    <React.Fragment>
+      <h2>Error</h2>
+      <p>The page you are looking for does not exist.</p>
+    </React.Fragment>
+  );
 }
 
 export default App;

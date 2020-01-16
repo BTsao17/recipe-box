@@ -20,8 +20,9 @@ class RecipeDetailsTemplate extends React.Component {
     console.log(match);
     const dishType = match.params.type; //only needed if the endpoint was /${dishType}/${recipeID}
     const recipeID = match.params.id; //a string, not number
+    const recipeTitle = match.params.recipe;
 
-    axios.get(`http://localhost:8080/recipe/${recipeID}`).then((response) => {
+    axios.get(`http://localhost:8080/recipe/${dishType}/${recipeID}/${recipeTitle}`).then((response) => {
       console.log(response.data);
       this.setState({
         recipe: response.data,
@@ -30,14 +31,27 @@ class RecipeDetailsTemplate extends React.Component {
   }
 
   render() {
+    const { type } = this.props.match.params;
+
+    //checks for an empty object for rendering of 404 error.
+    if (Object.keys(this.state.recipe).length === 0) {
+      return (
+        <React.Fragment>
+          <h2>404</h2>
+          <p>The page you are looking for cannot be found.</p>
+        </React.Fragment>
+      );
+    }
+    else {
     return (
       <React.Fragment>
         <h2>Recipe Details placeholder: {this.state.recipe.title}</h2>
         <div>Cuisine:{this.state.recipe.cuisine}</div>
-        <button onClick={() => this.props.history.goBack()}>Back to {this.props.match.params.type}</button>
+        <button onClick={() => this.props.history.goBack()}>Back to {type}</button>
       </React.Fragment>
     );
   }
+}
 }
 
 export default RecipeDetailsTemplate;
