@@ -34,6 +34,7 @@ class RecipeDetailsTemplate extends React.Component {
       <React.Fragment>
         <h2>Recipe Details placeholder: {this.state.recipe.title}</h2>
         <div>Cuisine:{this.state.recipe.cuisine}</div>
+        <button onClick={() => this.props.history.goBack()}>Back to {this.props.match.params.type}</button>
       </React.Fragment>
     );
   }
