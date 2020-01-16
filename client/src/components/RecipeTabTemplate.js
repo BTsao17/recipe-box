@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Route, Switch, Link, Redirect } from 'react-router-dom';
-import { RecipeDetailsTemplate } from '.';
+//import { RecipeDetailsTemplate } from '.';
 
 // function component alternative
 /*
@@ -78,16 +78,20 @@ class RecipeTabTemplate extends React.Component {
         <React.Fragment>
           <h2>{dishType}</h2>
           <p>This is the recipe page for {dishType.toLowerCase()}.</p>
-          <p>Listing Links:</p>
           {/* conditional rendering of list, only has bullets if recipes list has items */}
-          {this.state.recipeList.length !== 0 && <ul>{recipeLinks}</ul>}
+          {this.state.recipeList.length !== 0 && (
+            <React.Fragment>
+              <p>Listing Links:</p>
+              <ul>{recipeLinks}</ul>
+            </React.Fragment>
+          )}
 
-          <Switch>
+          {/* <Switch>
             <Route
               path={`${match.path}/:id/:recipe`}
               render={(routeProps) => <RecipeDetailsTemplate {...routeProps} />}
             />
-          </Switch>
+          </Switch> */}
         </React.Fragment>
       );
     }

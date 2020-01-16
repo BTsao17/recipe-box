@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Route, Switch, Link, Redirect } from 'react-router-dom';
 import './App.css';
-import { AddRecipeForm, RecipeTabTemplate } from './components';
+import { AddRecipeForm, RecipeTabTemplate, RecipeDetailsTemplate } from './components';
 
 class App extends React.Component {
   constructor(props) {
@@ -60,7 +60,7 @@ class App extends React.Component {
 
     //API post req to server, response is only the new recipe
     axios
-      .post('http://localhost:8080/recipes', data)
+      .post('http://localhost:8080/recipe', data)
       .then((response) => {
         const newTitleID = response.data;
         const newList = [ ...this.state.recipeTitleIDList ].concat(newTitleID);
@@ -107,7 +107,6 @@ class App extends React.Component {
           </button>
 
           <Switch>
-
             {/* Not using React Hooks */}
             <Route exact path="/" render={() => <HomeTab />} />
 
@@ -117,7 +116,13 @@ class App extends React.Component {
             />
 
             {/* dynamic pages */}
-            <Route path="/:type" render={(routeProps) => <RecipeTabTemplate dishTypes={dishTypes} {...routeProps} />} />
+            <Route
+              exact
+              path="/:type"
+              render={(routeProps) => <RecipeTabTemplate dishTypes={dishTypes} {...routeProps} />}
+            />
+
+            <Route path={`/:type/:id/:recipe`} render={(routeProps) => <RecipeDetailsTemplate {...routeProps} />} />
           </Switch>
         </main>
 
