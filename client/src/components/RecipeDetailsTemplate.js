@@ -32,9 +32,10 @@ class RecipeDetailsTemplate extends React.Component {
 
   render() {
     const { type } = this.props.match.params;
+    const { recipe } = this.state;
 
     //checks for an empty object for rendering of 404 error.
-    if (Object.keys(this.state.recipe).length === 0) {
+    if (Object.keys(recipe).length === 0) {
       return (
         <React.Fragment>
           <h2>404</h2>
@@ -43,15 +44,44 @@ class RecipeDetailsTemplate extends React.Component {
       );
     }
     else {
-    return (
-      <React.Fragment>
-        <h2>Recipe Details placeholder: {this.state.recipe.title}</h2>
-        <div>Cuisine:{this.state.recipe.cuisine}</div>
-        <button onClick={() => this.props.history.goBack()}>Back to {type}</button>
-      </React.Fragment>
-    );
+      return (
+        <React.Fragment>
+          <article>
+            <h2>{recipe.title}</h2>
+            <div>Type of cuisine: {recipe.cuisine}</div>
+            <TimeInfo time={recipe.time} />
+            <IngredInfo ingredients={recipe.ingredients} />
+          </article>
+          <button onClick={() => this.props.history.goBack()}>Back to {type}</button>
+        </React.Fragment>
+      );
+    }
   }
 }
+
+//making smaller components to avoid errors for mapping through data
+//that hasn't been fetched yet before the first render.
+function TimeInfo(props) {
+  // make sure the prep and cook time are strings rather and numbers. Right now, new recipes save them as strings. 
+  const prepTime = props.time[0].prep.toString().concat(' ', props.time[0].unit);
+  const cookTime = props.time[1].cook.toString().concat(' ', props.time[1].unit);
+  return (
+    <React.Fragment>
+      <section>
+        {props.time[0].prep !== "" && <div>Prep Time: {prepTime}</div>}
+        {props.time[1].cook !== "" && <div>Cook Time: {cookTime}</div>}
+      </section>
+    </React.Fragment>
+  );
+}
+
+function IngredInfo(props) {
+  console.log(props.ingredients)
+  return (
+    <React.Fragment>
+      <h3>Ingredients</h3>
+    </React.Fragment>
+  )
 }
 
 export default RecipeDetailsTemplate;
