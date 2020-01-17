@@ -69,13 +69,13 @@ app.get('/recipe/:type/:id/:title', (req, res) => {
   //specific query to allow for easier url validation.
   const recipeID = parseInt(req.params.id);
   const dishType = req.params.type.toLowerCase();
-  const recipeTitle = req.params.title.split('-').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  const recipeTitle = req.params.title.split('-').join(' ').toLowerCase();
 
   console.log(recipeID, dishType, recipeTitle);
 
   //query will change once db is set up for sure.
   let recipeDetails = recipes.find(
-    (recipe) => recipe.id === recipeID && recipe.dish === dishType && recipe.title === recipeTitle
+    (recipe) => recipe.id === recipeID && recipe.dish === dishType && recipe.title.toLowerCase() === recipeTitle
   );
 
   console.log(recipeDetails);
