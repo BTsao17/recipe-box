@@ -312,7 +312,7 @@ class AddRecipeForm extends React.Component {
             data-type="time"
             data-index="0"
             name="prep"
-            type="number"
+            type="number" //when set state, it automatically becomes a string.
             min="0"
             value={this.state.time[0].prep}
             onChange={this.handleChangeArr}
@@ -333,7 +333,7 @@ class AddRecipeForm extends React.Component {
             data-type="time"
             data-index="1"
             name="cook"
-            type="number"
+            type="number" //when set state, it automatically becomes a string.
             min="0"
             value={this.state.time[1].cook}
             onChange={this.handleChangeArr}

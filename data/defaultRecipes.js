@@ -6,23 +6,23 @@ const recipes = [
     dish: 'dessert',
     time: [
       {
-        prep: 15,
+        prep: '15',
         unit: 'minutes',
       },
       {
-        cook: 30,
+        cook: '30',
         unit: 'minutes',
       },
     ],
     ingredients: [
       {
         name: 'apples',
-        quantity: 5,
+        quantity: '5',
         unit: '',
       },
       {
         name: 'flour',
-        quantity: 3,
+        quantity: '3',
         unit: 'tablespoon',
       },
     ],
@@ -44,7 +44,12 @@ const recipes = [
         // },
       },
     ],
-    notes: [],
+    notes: [
+      {
+        id: 1,
+        text: '',
+      },
+    ],
   },
   {
     id: 2,
@@ -53,23 +58,23 @@ const recipes = [
     dish: 'vegetables',
     time: [
       {
-        prep: 10,
+        prep: '',
         unit: 'minutes',
       },
       {
-        cook: 25,
+        cook: '30',
         unit: 'minutes',
       },
     ],
     ingredients: [
       {
         name: 'medium-firm tofu',
-        quantity: 1,
+        quantity: '1',
         unit: 'box',
       },
       {
         name: 'soy sauce',
-        quantity: 2,
+        quantity: '2',
         unit: 'tablespoon',
       },
     ],
@@ -91,7 +96,12 @@ const recipes = [
         // },
       },
     ],
-    notes: [],
+    notes: [
+      {
+        id: 1,
+        text: "I have no idea what I'm doing.",
+      },
+    ],
   },
 ];
 
