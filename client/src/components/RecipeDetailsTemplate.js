@@ -51,6 +51,8 @@ class RecipeDetailsTemplate extends React.Component {
             <div>Type of cuisine: {recipe.cuisine}</div>
             <TimeInfo time={recipe.time} />
             <IngredInfo ingredients={recipe.ingredients} />
+            <Procedure procedure={recipe.procedure} />
+            <Notes notes={recipe.notes} />
           </article>
           <button onClick={() => this.props.history.goBack()}>Back to {type}</button>
         </React.Fragment>
@@ -62,26 +64,64 @@ class RecipeDetailsTemplate extends React.Component {
 //making smaller components to avoid errors for mapping through data
 //that hasn't been fetched yet before the first render.
 function TimeInfo(props) {
-  // make sure the prep and cook time are strings rather and numbers. Right now, new recipes save them as strings. 
-  const prepTime = props.time[0].prep.toString().concat(' ', props.time[0].unit);
-  const cookTime = props.time[1].cook.toString().concat(' ', props.time[1].unit);
+  // make sure the prep and cook time are strings rather and numbers. Right now, new recipes save them as strings.
+  const prepTime = props.time[0].prep.concat(' ', props.time[0].unit);
+  const cookTime = props.time[1].cook.concat(' ', props.time[1].unit);
   return (
     <React.Fragment>
       <section>
-        {props.time[0].prep !== "" && <div>Prep Time: {prepTime}</div>}
-        {props.time[1].cook !== "" && <div>Cook Time: {cookTime}</div>}
+        {props.time[0].prep && <div>Prep Time: {prepTime}</div>}
+        {props.time[1].cook && <div>Cook Time: {cookTime}</div>}
       </section>
     </React.Fragment>
   );
 }
 
 function IngredInfo(props) {
-  console.log(props.ingredients)
+  const ingredList = props.ingredients.map(({ name, quantity, unit }, i) => {
+    let ingred;
+    if (unit === '') {
+      ingred = quantity.concat(' ', name);
+    }
+    else {
+      ingred = quantity.concat(' ', unit, ' ', name);
+    }
+    return <li key={i}>{ingred}</li>;
+  });
+  return (
+    <section>
+      <h3>Ingredients</h3>
+      <ul>{ingredList}</ul>
+    </section>
+  );
+}
+
+function Procedure(props) {
+  const steps = props.procedure.map(({ description, step }) => {
+    return <li key={step}>{description}</li>;
+  });
+  return (
+    <section>
+      <h3>Procedure</h3>
+      <ol>{steps}</ol>
+    </section>
+  );
+}
+
+function Notes(props) {
+  const notesX = props.notes.map(({ text, id }) => {
+    return <li key={id}>{text}</li>;
+  });
   return (
     <React.Fragment>
-      <h3>Ingredients</h3>
+      {props.notes[0].text && (
+        <section>
+          <h3>Additional Notes</h3>
+          <ul>{notesX}</ul>
+        </section>
+      )}
     </React.Fragment>
-  )
+  );
 }
 
 export default RecipeDetailsTemplate;
