@@ -1,18 +1,26 @@
 import React from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import { Route, Switch, Link, Redirect } from 'react-router-dom';
 import './App.css';
 import { AddRecipeForm, RecipeTabTemplate, RecipeDetailsTemplate } from './components';
 
+//to connect component to redux at the
+function mapStateToProps(state) {
+  return {
+    dishTypes: state.dishTypes,
+  };
+}
+
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dishTypes: [],
-      cuisines: [],
-      recipeTitleIDList: [], //no longer sure if I need the recipe list here at all, unless to display favourties?
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     //dishTypes: [],
+  //     cuisines: [],
+  //     recipeTitleIDList: [], //no longer sure if I need the recipe list here at all, unless to display favourties?
+  //   };
+  // }
 
   componentDidMount() {
     // Promise.all([axios.get('localhost:8080/cuisine'), axios.get('localhost:8080/dishTypes')])
@@ -75,7 +83,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { dishTypes, cuisines, recipeTitleIDList } = this.state;
+    const { dishTypes, cuisines, recipeTitleIDList } = this.props; //changed from this.state
 
     //future idea: allow a toggle to choose between dishType and Cuisine tabs sorting
     const navBarLinks = dishTypes.map((type) => {
@@ -152,4 +160,5 @@ function Error() {
   );
 }
 
-export default App;
+//export default App;
+export default connect(mapStateToProps)(App);

@@ -1,4 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+function mapStateToProps(state) {
+  return {
+    dishTypes: state.dishTypes,
+    cuisines: state.cuisines,
+  };
+}
 
 class AddRecipeForm extends React.Component {
   constructor(props) {
@@ -17,7 +25,8 @@ class AddRecipeForm extends React.Component {
           unit: 'minutes',
         },
       ],
-      ingredients: [//not sure how id will work, or if it's needed. 
+      ingredients: [
+        //not sure how id will work, or if it's needed.
         {
           name: '',
           quantity: '',
@@ -29,7 +38,8 @@ class AddRecipeForm extends React.Component {
           unit: '',
         },
       ],
-      procedure: [//might need id in the future?
+      procedure: [
+        //might need id in the future?
         {
           step: 1,
           description: '',
@@ -381,4 +391,5 @@ class AddRecipeForm extends React.Component {
   }
 }
 
-export default AddRecipeForm;
+//export default AddRecipeForm;
+export default connect(mapStateToProps)(AddRecipeForm);
