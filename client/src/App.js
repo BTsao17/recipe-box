@@ -5,9 +5,9 @@ import { Route, Switch, Link, Redirect } from 'react-router-dom';
 import './App.css';
 import { AddRecipeForm, RecipeTabTemplate, RecipeDetailsTemplate } from './components';
 
-import { fetchDishTypes } from './actions';
+import { fetchDishTypes, fetchCuisines } from './actions';
 
-//to connect component to redux at the
+//to connect component to redux at the bottom
 function mapStateToProps(state) {
   return {
     dishTypes: state.dishTypes,
@@ -18,8 +18,6 @@ class App extends React.Component {
   // constructor(props) {
   //   super(props);
   //   this.state = {
-  //     //dishTypes: [],
-  //     cuisines: [],
   //     recipeTitleIDList: [], //no longer sure if I need the recipe list here at all, unless to display favourties?
   //   };
   // }
@@ -37,20 +35,20 @@ class App extends React.Component {
     //   .catch((err) => {
     //     console.log(err);
     //   });
-
     this.props.dispatch(fetchDishTypes());
 
     //lists of cuisines
-    axios
-      .get('http://localhost:8080/cuisines')
-      .then((response) => {
-        this.setState({
-          cuisines: response.data,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // axios
+    //   .get('http://localhost:8080/cuisines')
+    //   .then((response) => {
+    //     this.setState({
+    //       cuisines: response.data,
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    this.props.dispatch(fetchCuisines());
 
     //list of recipe titles - maybe favourites?
     axios.get('http://localhost:8080/recipeList').then((response) => {

@@ -19,10 +19,29 @@ export const fetchDishTypesFailure = (error) => ({
   payload: { error },
 });
 
+//thunk action - doing the fetching
+//thunk - a function that's returned by another function
+//in Redux, thunk - an action creator that returns a function instead of a plain action object
+export const fetchDishTypes = () => {
+  return (dispatch) => {
+    dispatch(fetchDishTypesBegin());
+    return axios
+      .get('http://localhost:8080/dishTypes')
+      .then((response) => {
+        //console.log(response)
+        dispatch(fetchDishTypesSuccess(response.data));
+        return response.data;
+      })
+      .catch((error) => dispatch(fetchDishTypesFailure(error)));
+  };
+};
+
 //CUISINES actions
+//constants
 export const FETCH_CUISINES_BEGIN = 'FETCH_CUISINES_BEGIN';
 export const FETCH_CUISINES_SUCCESS = 'FETCH_CUISINES_SUCCESS';
 export const FETCH_CUISINES_FAILURE = 'FETCH_CUISINES_FAILURE';
+//creators
 export const fetchCuisinesBegin = () => ({
   type: FETCH_CUISINES_BEGIN,
 });
@@ -34,22 +53,17 @@ export const fetchCuisinesFailure = (error) => ({
   type: FETCH_CUISINES_FAILURE,
   payload: { error },
 });
-
-
-//thunk action - doing the fetching
-//thunk - a function that's returned by another function
-//in Redux, thunk - an action creator that returns a function instead of a plain action object
-export const fetchDishTypes = () => {
-  console.log('begins?')
+//thunk
+export const fetchCuisines = () => {
   return (dispatch) => {
-    dispatch(fetchDishTypesBegin());
+    dispatch(fetchCuisinesBegin());
     return axios
-      .get('http://localhost:8080/dishTypes')
+      .get('http://localhost:8080/cuisines')
       .then((response) => {
-        console.log(response)
-        dispatch(fetchDishTypesSuccess(response.data)); 
+        //console.log(response)
+        dispatch(fetchCuisinesSuccess(response.data));
         return response.data;
       })
-      .catch((error) => dispatch(fetchDishTypesFailure(error)));
+      .catch((error) => dispatch(fetchCuisinesFailure(error)));
   };
 };
