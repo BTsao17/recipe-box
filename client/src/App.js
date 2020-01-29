@@ -5,6 +5,8 @@ import { Route, Switch, Link, Redirect } from 'react-router-dom';
 import './App.css';
 import { AddRecipeForm, RecipeTabTemplate, RecipeDetailsTemplate } from './components';
 
+import { fetchDishTypes } from './actions';
+
 //to connect component to redux at the
 function mapStateToProps(state) {
   return {
@@ -25,16 +27,18 @@ class App extends React.Component {
   componentDidMount() {
     // Promise.all([axios.get('localhost:8080/cuisine'), axios.get('localhost:8080/dishTypes')])
 
-    axios
-      .get('http://localhost:8080/dishTypes')
-      .then((response) => {
-        this.setState({
-          dishTypes: response.data,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // axios
+    //   .get('http://localhost:8080/dishTypes')
+    //   .then((response) => {
+    //     this.setState({
+    //       dishTypes: response.data,
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+
+    this.props.dispatch(fetchDishTypes());
 
     //lists of cuisines
     axios
