@@ -7,13 +7,6 @@ import { AddRecipeForm, RecipeTabTemplate, RecipeDetailsTemplate } from './compo
 
 import { fetchDishTypes, fetchCuisines } from './actions';
 
-//to connect component to redux at the bottom
-function mapStateToProps(state) {
-  return {
-    dishTypes: state.dishTypes,
-  };
-}
-
 class App extends React.Component {
   // constructor(props) {
   //   super(props);
@@ -35,7 +28,7 @@ class App extends React.Component {
     //   .catch((err) => {
     //     console.log(err);
     //   });
-    this.props.dispatch(fetchDishTypes());
+    this.props.fetchDishTypes();
 
     //lists of cuisines
     // axios
@@ -48,7 +41,7 @@ class App extends React.Component {
     //   .catch((err) => {
     //     console.log(err);
     //   });
-    this.props.dispatch(fetchCuisines());
+    this.props.fetchCuisines();
 
     //list of recipe titles - maybe favourites?
     axios.get('http://localhost:8080/recipeList').then((response) => {
@@ -123,14 +116,14 @@ class App extends React.Component {
             <Route
               exact
               path="/newRecipe"
-              render={() => <AddRecipeForm dishTypes={dishTypes} cuisines={cuisines} saveRecipe={this.saveRecipe} />}
+              render={() => <AddRecipeForm saveRecipe={this.saveRecipe} />}
             />
 
             {/* dynamic pages */}
             <Route
               exact
               path="/:type"
-              render={(routeProps) => <RecipeTabTemplate dishTypes={dishTypes} {...routeProps} />}
+              render={(routeProps) => <RecipeTabTemplate {...routeProps} />}
             />
 
             <Route exact path="/:type/:id/:recipe" render={(routeProps) => <RecipeDetailsTemplate {...routeProps} />} />
@@ -162,5 +155,18 @@ function Error() {
   );
 }
 
+//to connect component to redux
+const mapStateToProps = (state) => {
+  return {
+    dishTypes: state.dishTypes.items,
+  };
+}
+
+//keys become prop names, and rather than having to call this.props.dispatch(action()), can ust use this.props.action()
+const mapDispatchToProps = {
+fetchDishTypes,
+fetchCuisines
+}
+
 //export default App;
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
