@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { Route, Switch, Link, Redirect, withRouter } from 'react-router-dom';
-import { fetchRecipeList, getRecipeByType } from '../actions';
+import { Link } from 'react-router-dom';
+import { fetchRecipeList } from '../actions';
 
 // function component alternative
 /*
@@ -26,45 +26,41 @@ class RecipeTabTemplate extends React.Component {
   // }
 
   componentDidMount() {
+    //only fetch if going to new Recipe Tab
+    const { recipeList } = this.props;
     const { type } = this.props.match.params;
-    console.log('type', type.toLowerCase());
-    this.props.getRecipeByType(type.toLowerCase());
-    //this.getPageData();
-  }
-
-  componentDidUpdate(prevProps) {
-    console.log('prevProps', prevProps);
-    console.log('current props', this.props);
-    if (prevProps.match.params.type !== this.props.match.params.type) {
-      //this.getPageData();
-
-      //for fetching dummy data
-      const { type } = this.props.match.params;
-      this.props.getRecipeByType(type.toLowerCase());
+    const sameDishTypeTab = recipeList.find(({ dish }) => dish === type.toLowerCase());
+    console.log(sameDishTypeTab);
+    if (!recipeList.length || !sameDishTypeTab) {
+      this.getPageData();
     }
   }
 
-  // getPageData = () => {
-  //   const { type } = this.props.match.params;
-  //   console.log('dishtype info:', this.props.match);
+  componentDidUpdate(prevProps) {
+    if (prevProps.match.params.type !== this.props.match.params.type) {
+      this.getPageData();
+    }
+  }
 
-  //   axios
-  //     .get(`http://localhost:8080/${type}`)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       this.setState({
-  //         recipeList: response.data,
-  //       });
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
+  getPageData = () => {
+    const { type } = this.props.match.params;
+    this.props.fetchRecipeList(type);
+    // axios
+    //   .get(`http://localhost:8080/${type}`)
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     this.setState({
+    //       recipeList: response.data,
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+  };
 
   render() {
     const { match, dishTypes } = this.props;
     const dishType = match.params.type;
-    console.log('recipe tab props', this.props);
     console.log('recipeList', this.props.recipeList);
 
     const recipeLinks = this.props.recipeList.map((recipe) => {
@@ -105,13 +101,11 @@ class RecipeTabTemplate extends React.Component {
 function mapStateToProps(state) {
   return {
     dishTypes: state.dishTypes.items,
-    recipeList: state.recipeList.itemsByType,
+    recipeList: state.recipeList.items,
   };
 }
 const mapDispatchToProps = {
   fetchRecipeList,
-  //filtering through dummy data in store.
-  getRecipeByType,
 };
 
 //export default RecipeTabTemplate;

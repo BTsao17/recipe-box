@@ -98,10 +98,3 @@ export const fetchRecipeList = (type) => {
       .catch((error) => dispatch(fetchListFailure(error)));
   };
 };
-
-//for dummy data under recipeListReducer
-export const GET_RECIPE_BY_TYPE = 'GET_RECIPE_BY_TYPE';
-export const getRecipeByType = (dishType) => ({
-  type: GET_RECIPE_BY_TYPE,
-  payload: dishType, //should be string. 
-});
