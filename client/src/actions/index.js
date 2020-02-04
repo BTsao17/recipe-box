@@ -18,7 +18,6 @@ export const fetchDishTypesFailure = (error) => ({
   type: FETCH_DISHTYPES_FAILURE,
   payload: { error },
 });
-
 //thunk action - doing the fetching
 //thunk - a function that's returned by another function
 //in Redux, thunk - an action creator that returns a function instead of a plain action object
@@ -67,3 +66,42 @@ export const fetchCuisines = () => {
       .catch((error) => dispatch(fetchCuisinesFailure(error)));
   };
 };
+
+//RECIPELIST actions
+//constants
+export const FETCH_LIST_BEGIN = 'FETCH_LIST_BEGIN';
+export const FETCH_LIST_SUCCESS = 'FETCH_LIST_SUCCESS';
+export const FETCH_LIST_FAILURE = 'FETCH_LIST_FAILURE';
+//creators
+const fetchListBegin = () => ({ type: FETCH_LIST_BEGIN });
+const fetchListSuccess = (recipeList) => ({
+  type: FETCH_LIST_SUCCESS,
+  payload: { recipeList },
+});
+const fetchListFailure = (error) => ({
+  type: FETCH_LIST_FAILURE,
+  payload: { error },
+});
+//thunk
+export const fetchRecipeList = (type) => {
+  console.log(type);
+  return (dispatch) => {
+    dispatch(fetchListBegin());
+    console.log(type);
+    return axios
+      .get(`http://localhost:8080/${type}`)
+      .then((response) => {
+        console.log(response);
+        dispatch(fetchListSuccess(response.data));
+        return response.data;
+      })
+      .catch((error) => dispatch(fetchListFailure(error)));
+  };
+};
+
+//for dummy data under recipeListReducer
+export const GET_RECIPE_BY_TYPE = 'GET_RECIPE_BY_TYPE';
+export const getRecipeByType = (dishType) => ({
+  type: GET_RECIPE_BY_TYPE,
+  payload: dishType, //should be string. 
+});
