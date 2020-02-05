@@ -1,11 +1,10 @@
 import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { Route, Switch, Link, Redirect } from 'react-router-dom';
+import { Route, Switch, Link } from 'react-router-dom';
 import './App.css';
 import { AddRecipeForm, RecipeTabTemplate, RecipeDetailsTemplate } from './components';
-
-import { fetchDishTypes, fetchCuisines } from './actions';
+import { fetchDishTypes } from './actions';
 
 class App extends React.Component {
   // constructor(props) {
@@ -41,7 +40,6 @@ class App extends React.Component {
     //   .catch((err) => {
     //     console.log(err);
     //   });
-    this.props.fetchCuisines();
 
     //list of recipe titles - maybe favourites?
     axios.get('http://localhost:8080/recipeList').then((response) => {
@@ -110,24 +108,12 @@ class App extends React.Component {
           </button>
 
           <Switch>
-            {/* Not using React Hooks */}
+            {/* Not using React Hooks, so use render rather than child */}
             <Route exact path="/" render={() => <HomeTab />} />
-
-            <Route
-              exact
-              path="/newRecipe"
-              render={() => <AddRecipeForm saveRecipe={this.saveRecipe} />}
-            />
-
+            <Route exact path="/newRecipe" render={() => <AddRecipeForm saveRecipe={this.saveRecipe} />} />
             {/* dynamic pages */}
-            <Route
-              exact
-              path="/:type"
-              render={(routeProps) => <RecipeTabTemplate {...routeProps} />}
-            />
-
+            <Route exact path="/:type" render={(routeProps) => <RecipeTabTemplate {...routeProps} />} />
             <Route exact path="/:type/:id/:recipe" render={(routeProps) => <RecipeDetailsTemplate {...routeProps} />} />
-
             {/* catch all error page for random url inputs  */}
             <Route path="*" render={() => <Error />} />
           </Switch>
@@ -160,13 +146,12 @@ const mapStateToProps = (state) => {
   return {
     dishTypes: state.dishTypes.items,
   };
-}
+};
 
 //keys become prop names, and rather than having to call this.props.dispatch(action()), can ust use this.props.action()
 const mapDispatchToProps = {
-fetchDishTypes,
-fetchCuisines
-}
+  fetchDishTypes,
+};
 
 //export default App;
 export default connect(mapStateToProps, mapDispatchToProps)(App);

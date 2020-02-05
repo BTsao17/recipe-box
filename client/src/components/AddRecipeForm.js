@@ -1,12 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
-function mapStateToProps(state) {
-  return {
-    dishTypes: state.dishTypes,
-    cuisines: state.cuisines,
-  };
-}
+import { fetchCuisines } from '../actions';
 
 class AddRecipeForm extends React.Component {
   constructor(props) {
@@ -56,6 +50,15 @@ class AddRecipeForm extends React.Component {
         },
       ],
     };
+  }
+
+  componentDidMount() {
+    console.log(this.props.cuisines);
+    console.log(Boolean(this.props.cuisines.length));
+    //may have to change the conditional, especially if in the future, user can add more cuisines
+    if (!this.props.cuisines.length) {
+      this.props.fetchCuisines();
+    }
   }
 
   handleChange = (e) => {
@@ -391,5 +394,15 @@ class AddRecipeForm extends React.Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    dishTypes: state.dishTypes.items,
+    cuisines: state.cuisines.items,
+  };
+}
+
+const mapDispatchToProps = {
+  fetchCuisines,
+};
 //export default AddRecipeForm;
-export default connect(mapStateToProps)(AddRecipeForm);
+export default connect(mapStateToProps, mapDispatchToProps)(AddRecipeForm);
