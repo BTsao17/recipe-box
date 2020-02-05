@@ -53,8 +53,8 @@ app.get('/:type', (req, res) => {
   const type = req.params.type.toLowerCase();
   const recipeList = recipes.reduce((acc, cV) => {
     if (cV.dish === type) {
-      const recipeTitleID = (({ title, id }) => ({ title, id }))(cV);
-      acc.push(recipeTitleID);
+      const titleIDType = (({ title, id, dish }) => ({ title, id, dish}))(cV);
+      acc.push(titleIDType);
     }
     return acc;
   }, []);

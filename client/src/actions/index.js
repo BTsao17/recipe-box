@@ -87,7 +87,6 @@ export const fetchRecipeList = (type) => {
   console.log(type);
   return (dispatch) => {
     dispatch(fetchListBegin());
-    console.log(type);
     return axios
       .get(`http://localhost:8080/${type}`)
       .then((response) => {

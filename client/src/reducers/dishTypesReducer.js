@@ -1,7 +1,7 @@
 import { FETCH_DISHTYPES_BEGIN, FETCH_DISHTYPES_SUCCESS, FETCH_DISHTYPES_FAILURE } from '../actions';
 
 const initialState = {
-  items: ['Appetizer', 'Main', 'Dessert'],
+  items: [],
   loading: false,
   error: null,
 };

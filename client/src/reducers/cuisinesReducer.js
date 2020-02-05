@@ -1,7 +1,7 @@
 import { FETCH_CUISINES_BEGIN, FETCH_CUISINES_SUCCESS, FETCH_CUISINES_FAILURE } from '../actions';
 
 const initialState = {
-  items: ['Chinese', 'Japanese', 'Korean'],
+  items: [],
   loading: false,
   error: null,
 };
