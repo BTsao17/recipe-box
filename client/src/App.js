@@ -7,39 +7,8 @@ import { AddRecipeForm, RecipeTabTemplate, RecipeDetailsTemplate } from './compo
 import { fetchDishTypes } from './actions';
 
 class App extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     recipeTitleIDList: [], //no longer sure if I need the recipe list here at all, unless to display favourties?
-  //   };
-  // }
-
   componentDidMount() {
-    // Promise.all([axios.get('localhost:8080/cuisine'), axios.get('localhost:8080/dishTypes')])
-
-    // axios
-    //   .get('http://localhost:8080/dishTypes')
-    //   .then((response) => {
-    //     this.setState({
-    //       dishTypes: response.data,
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
     this.props.fetchDishTypes();
-
-    //lists of cuisines
-    // axios
-    //   .get('http://localhost:8080/cuisines')
-    //   .then((response) => {
-    //     this.setState({
-    //       cuisines: response.data,
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
 
     //list of recipe titles - maybe favourites?
     axios.get('http://localhost:8080/recipeList').then((response) => {
@@ -76,7 +45,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { dishTypes, cuisines, recipeTitleIDList } = this.props; //changed from this.state
+    const { dishTypes } = this.props; //changed from this.state
 
     //future idea: allow a toggle to choose between dishType and Cuisine tabs sorting
     const navBarLinks = dishTypes.map((type) => {

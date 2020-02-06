@@ -10,31 +10,14 @@ import { fetchRecipeDetails } from '../actions';
 // }
 
 class RecipeDetailsTemplate extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     recipe: {},
-  //   };
-  // }
-
   componentDidMount() {
-    const { match } = this.props;
-    console.log(match);
+    const { match, recipe } = this.props;
     const dishType = match.params.type; //only needed if the endpoint was /${dishType}/${recipeID}
     const recipeID = match.params.id; //a string, not number
     const recipeTitle = match.params.recipe;
 
-    // axios.get(`http://localhost:8080/recipe/${dishType}/${recipeID}/${recipeTitle}`).then((response) => {
-    //   console.log(response.data);
-    //   this.setState({
-    //     recipe: response.data,
-    //   });
-    // });
-
     //check if empty object, or if same recipe details
-    const { recipe } = this.props;
-    const { id } = this.props.match.params;
-    if (Object.keys(recipe).length === 0 || !(recipe.id === Number(id))) {
+    if (Object.keys(recipe).length === 0 || !(recipe.id === Number(recipeID))) {
       this.props.fetchRecipeDetails(dishType, recipeID, recipeTitle);
     }
   }

@@ -18,15 +18,8 @@ function RecipeTabTemplate(props) {
 */
 
 class RecipeTabTemplate extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     recipeList: [],
-  //   };
-  // }
-
   componentDidMount() {
-    //only fetch if going to new Recipe Tab
+    //only fetch if going to a new Recipe Tab from Home
     const { recipeList } = this.props;
     const { type } = this.props.match.params;
     const sameDishTypeTab = recipeList.find(({ dish }) => dish === type.toLowerCase());
@@ -45,17 +38,6 @@ class RecipeTabTemplate extends React.Component {
   getPageData = () => {
     const { type } = this.props.match.params;
     this.props.fetchRecipeList(type);
-    // axios
-    //   .get(`http://localhost:8080/${type}`)
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     this.setState({
-    //       recipeList: response.data,
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   };
 
   render() {
