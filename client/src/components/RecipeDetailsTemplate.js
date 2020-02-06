@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import { Route, Switch, Link, Redirect } from 'react-router-dom';
+import { fetchRecipeDetails } from '../actions';
 
 // function RecipeDetailsTemplate(props) {
 //   console.log("recipe dets info",props.match);
@@ -8,12 +10,12 @@ import { Route, Switch, Link, Redirect } from 'react-router-dom';
 // }
 
 class RecipeDetailsTemplate extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      recipe: {},
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     recipe: {},
+  //   };
+  // }
 
   componentDidMount() {
     const { match } = this.props;
@@ -22,17 +24,24 @@ class RecipeDetailsTemplate extends React.Component {
     const recipeID = match.params.id; //a string, not number
     const recipeTitle = match.params.recipe;
 
-    axios.get(`http://localhost:8080/recipe/${dishType}/${recipeID}/${recipeTitle}`).then((response) => {
-      console.log(response.data);
-      this.setState({
-        recipe: response.data,
-      });
-    });
+    // axios.get(`http://localhost:8080/recipe/${dishType}/${recipeID}/${recipeTitle}`).then((response) => {
+    //   console.log(response.data);
+    //   this.setState({
+    //     recipe: response.data,
+    //   });
+    // });
+
+    //check if empty object, or if same recipe details
+    const { recipe } = this.props;
+    const { id } = this.props.match.params;
+    if (Object.keys(recipe).length === 0 || !(recipe.id === Number(id))) {
+      this.props.fetchRecipeDetails(dishType, recipeID, recipeTitle);
+    }
   }
 
   render() {
     const { type } = this.props.match.params;
-    const { recipe } = this.state;
+    const { recipe } = this.props;
 
     //checks for an empty object for rendering of 404 error.
     if (Object.keys(recipe).length === 0) {
@@ -124,4 +133,14 @@ function Notes(props) {
   );
 }
 
-export default RecipeDetailsTemplate;
+function mapStateToProps(state) {
+  return {
+    recipe: state.recipeDetails.details,
+  };
+}
+const mapDispatchToProps = {
+  fetchRecipeDetails,
+};
+
+//export default RecipeDetailsTemplate;
+export default connect(mapStateToProps, mapDispatchToProps)(RecipeDetailsTemplate);

@@ -97,3 +97,34 @@ export const fetchRecipeList = (type) => {
       .catch((error) => dispatch(fetchListFailure(error)));
   };
 };
+
+//Recipe Details  actions
+//constants
+export const FETCH_DETS_BEGIN = 'FETCH_DETS_BEGIN';
+export const FETCH_DETS_SUCCESS = 'FETCH_DETS_SUCCESS';
+export const FETCH_DETS_FAILURE = 'FETCH_DETS_FAILURE';
+//creators
+const fetchDetsBegin = () => ({ type: FETCH_DETS_BEGIN });
+const fetchDetsSuccess = (recipeDetails) => ({
+  type: FETCH_DETS_SUCCESS,
+  payload: { recipeDetails },
+});
+const fetchDetsFailure = (error) => ({
+  type: FETCH_DETS_FAILURE,
+  payload: { error },
+});
+
+export const fetchRecipeDetails = (type, id, title) => {
+  console.log(type, id, title);
+  return (dispatch) => {
+    dispatch(fetchDetsBegin());
+    return axios
+      .get(`http://localhost:8080/recipe/${type}/${id}/${title}`)
+      .then((response) => {
+        console.log('dets', response.data);
+        dispatch(fetchDetsSuccess(response.data));
+        return response.data;
+      })
+      .catch((error) => dispatch(fetchDetsFailure(error)));
+  };
+};

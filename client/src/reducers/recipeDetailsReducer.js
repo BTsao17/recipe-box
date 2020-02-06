@@ -1,34 +1,34 @@
-import { FETCH_LIST_BEGIN, FETCH_LIST_SUCCESS, FETCH_LIST_FAILURE } from '../actions';
+import { FETCH_DETS_BEGIN, FETCH_DETS_SUCCESS, FETCH_DETS_FAILURE } from '../actions';
 
 const initialState = {
-  list: [],
+  details: {},
   loading: false,
   error: null,
 };
 
-function recipeList(state = initialState, action) {
+function recipeDetails(state = initialState, action) {
   switch (action.type) {
-    case FETCH_LIST_BEGIN:
+    case FETCH_DETS_BEGIN:
       return {
         ...state,
         loading: true,
       };
-    case FETCH_LIST_SUCCESS:
+    case FETCH_DETS_SUCCESS:
       return {
         ...state,
         loading: false,
-        list: action.payload.recipeList,
+        details: action.payload.recipeDetails,
       };
-    case FETCH_LIST_FAILURE:
+    case FETCH_DETS_FAILURE:
       return {
         ...state,
         loading: false,
         error: action.payload.error,
-        list: [],
+        details: {},
       };
     default:
       return state;
   }
 }
 
-export default recipeList;
+export default recipeDetails;

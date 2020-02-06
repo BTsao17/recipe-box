@@ -101,7 +101,7 @@ class RecipeTabTemplate extends React.Component {
 function mapStateToProps(state) {
   return {
     dishTypes: state.dishTypes.items,
-    recipeList: state.recipeList.items,
+    recipeList: state.recipeList.list,
   };
 }
 const mapDispatchToProps = {

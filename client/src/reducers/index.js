@@ -1,11 +1,12 @@
 import dishTypes from './dishTypesReducer';
 import cuisines from './cuisinesReducer';
 import recipeList from './recipeListReducer';
+import recipeDetails from './recipeDetailsReducer';
 
 //alt, use combineReducer
 import { combineReducers } from 'redux';
 
-//initial state structure
+// initial state structure
 // const initialState = {
 //   dishTypes: {
 //     items: [],
@@ -18,10 +19,15 @@ import { combineReducers } from 'redux';
 //     error: null,
 //   },
 //   recipeList: {
-//     items: [],
+//     list: [],
 //     loading: false,
 //     error: null,
 //   },
+//   recipeDetails: {
+//     details: {},
+//     loading: false,
+//     error: null,
+//   }
 // };
 
 //reducers - take current state and action, and return a new state.
@@ -34,14 +40,16 @@ function rootReducer(state = {}, action) {
     dishTypes: dishTypes(state.dishTypes, action),
     cuisines: cuisines(state.cuisines, action),
     recipeList: recipeList(state.recipeList, action),
+    recipeDetails: recipeDetails(state.recipeDetails, action),
   };
 }
 
-//alt:
+// alt:
 // const rootReducer = combineReducers({
 //   dishTypes,
 //   cuisines,
 //   recipeList,
+//   recipeDetails,
 // });
 
 export default rootReducer;
