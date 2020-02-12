@@ -2,6 +2,7 @@ import dishTypes from './dishTypesReducer';
 import cuisines from './cuisinesReducer';
 import recipeList from './recipeListReducer';
 import recipeDetails from './recipeDetailsReducer';
+import newRecipe from './newRecipeReducer';
 
 //alt, use combineReducer
 import { combineReducers } from 'redux';
@@ -41,6 +42,7 @@ function rootReducer(state = {}, action) {
     cuisines: cuisines(state.cuisines, action),
     recipeList: recipeList(state.recipeList, action),
     recipeDetails: recipeDetails(state.recipeDetails, action),
+    newRecipe: newRecipe(state.newRecipe, action)
   };
 }
 

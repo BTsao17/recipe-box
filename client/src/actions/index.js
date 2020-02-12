@@ -1,20 +1,20 @@
 import axios from 'axios';
 
-//DISHTYPES actions
+//DISHTYPES actions - can probably combine all fetch_type_begin/success/failure constants and creators into one set. 
 //to fetch data from server
 //action constants
 export const FETCH_DISHTYPES_BEGIN = 'FETCH_DISHTYPES_BEGIN';
 export const FETCH_DISHTYPES_SUCCESS = 'FETCH_DISHTYPES_SUCCESS';
 export const FETCH_DISHTYPES_FAILURE = 'FETCH_DISHTYPES_FAILURE';
 //Redux action creators
-export const fetchDishTypesBegin = () => ({
+const fetchDishTypesBegin = () => ({
   type: FETCH_DISHTYPES_BEGIN,
 });
-export const fetchDishTypesSuccess = (dishTypes) => ({
+const fetchDishTypesSuccess = (dishTypes) => ({
   type: FETCH_DISHTYPES_SUCCESS,
   payload: { dishTypes },
 });
-export const fetchDishTypesFailure = (error) => ({
+const fetchDishTypesFailure = (error) => ({
   type: FETCH_DISHTYPES_FAILURE,
   payload: { error },
 });
@@ -41,14 +41,14 @@ export const FETCH_CUISINES_BEGIN = 'FETCH_CUISINES_BEGIN';
 export const FETCH_CUISINES_SUCCESS = 'FETCH_CUISINES_SUCCESS';
 export const FETCH_CUISINES_FAILURE = 'FETCH_CUISINES_FAILURE';
 //creators
-export const fetchCuisinesBegin = () => ({
+const fetchCuisinesBegin = () => ({
   type: FETCH_CUISINES_BEGIN,
 });
-export const fetchCuisinesSuccess = (cuisines) => ({
+const fetchCuisinesSuccess = (cuisines) => ({
   type: FETCH_CUISINES_SUCCESS,
   payload: { cuisines },
 });
-export const fetchCuisinesFailure = (error) => ({
+const fetchCuisinesFailure = (error) => ({
   type: FETCH_CUISINES_FAILURE,
   payload: { error },
 });
@@ -128,3 +128,6 @@ export const fetchRecipeDetails = (type, id, title) => {
       .catch((error) => dispatch(fetchDetsFailure(error)));
   };
 };
+
+//Recipe Form Actions
+export const ADD_INGREDS_INPUT = 'ADD_INGREDS_INPUT';
