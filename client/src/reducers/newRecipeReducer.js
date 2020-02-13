@@ -1,3 +1,5 @@
+import { ADD_INGREDS_INPUT } from '../actions';
+
 const initialState = {
   title: '',
   cuisine: '',
@@ -13,7 +15,8 @@ const initialState = {
     },
   ],
   ingredients: [
-    //not sure how id will work, or if it's needed.
+    //not sure how id will work, since it should be linked to the name,
+    //but quantity should be tied to the recipe.
     {
       name: '',
       quantity: '',
@@ -45,8 +48,15 @@ const initialState = {
 };
 
 function newRecipe(state = initialState, action) {
-
-  return state;
+  switch (action.type) {
+    case ADD_INGREDS_INPUT:
+      return {
+        ...state,
+        ingredients: [...state.ingredients, action.payload]
+      };
+    default:
+      return state;
+  }
 }
 
 export default newRecipe;

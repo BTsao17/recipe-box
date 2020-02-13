@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchCuisines } from '../actions';
+import { addIngredsInput } from '../actions';
 
 class AddRecipeForm extends React.Component {
   constructor(props) {
@@ -53,8 +54,8 @@ class AddRecipeForm extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.cuisines);
-    console.log(Boolean(this.props.cuisines.length));
+    //console.log(this.props.cuisines);
+    //console.log(Boolean(this.props.cuisines.length));
     //may have to change the conditional, especially if in the future, user can add more cuisines
     if (!this.props.cuisines.length) {
       this.props.fetchCuisines();
@@ -103,17 +104,12 @@ class AddRecipeForm extends React.Component {
 
   //figure out how to combing add___Input functions to make code DRY
   //the differences are the variables that create empty objects, maybe have them as parameters (event, newObj)
-  addMoreIngredInput = (e) => {
+  addMoreIngredInput = () => {
     // once this is clicked, add one more object with empty values into ingredients array state
     //generate html <ul> options to add to the rendering - ingredientsListTemplate
-    const ingredientsObjTemplate = { name: '', quantity: '', unit: '' };
-    let newArr = JSON.parse(JSON.stringify(this.state.ingredients)); // let or const?
-    newArr.push(ingredientsObjTemplate);
-    console.log(newArr);
-
-    this.setState({
-      ingredients: newArr,
-    });
+   
+    const ingredientsObjTemplate = { name: '', quantity: '', unit: '' }; //necessary? or better take from redux store
+    this.props.addIngredsInput(ingredientsObjTemplate);
   };
 
   addMoreStepsInput = (e) => {
@@ -214,13 +210,14 @@ class AddRecipeForm extends React.Component {
   };
 
   render() {
-    const { dishTypes, cuisines } = this.props;
+    const { dishTypes, cuisines, newRecipe } = this.props;
+    console.log('redux recipe state', newRecipe)
 
     const cuisineOptions = this.generateListOptions(cuisines);
     const dishTypeOptions = this.generateListOptions(dishTypes);
 
-    //default key is set with index - may need to change once database is set
-    const ingredientsListTemplate = this.state.ingredients.map((ingredient, index) => {
+    //default key is set with index - will need to change once database is set
+    const ingredientsListTemplate = newRecipe.ingredients.map((ingredient, index) => {
       return (
         <li key={index}>
           <input
@@ -398,11 +395,13 @@ function mapStateToProps(state) {
   return {
     dishTypes: state.dishTypes.items,
     cuisines: state.cuisines.items,
+    newRecipe: state.newRecipe
   };
 }
 
 const mapDispatchToProps = {
   fetchCuisines,
+  addIngredsInput,
 };
 //export default AddRecipeForm;
 export default connect(mapStateToProps, mapDispatchToProps)(AddRecipeForm);

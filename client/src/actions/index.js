@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-//DISHTYPES actions - can probably combine all fetch_type_begin/success/failure constants and creators into one set. 
-//to fetch data from server
+//DISHTYPES actions
 //action constants
 export const FETCH_DISHTYPES_BEGIN = 'FETCH_DISHTYPES_BEGIN';
 export const FETCH_DISHTYPES_SUCCESS = 'FETCH_DISHTYPES_SUCCESS';
@@ -131,3 +130,7 @@ export const fetchRecipeDetails = (type, id, title) => {
 
 //Recipe Form Actions
 export const ADD_INGREDS_INPUT = 'ADD_INGREDS_INPUT';
+export const addIngredsInput = (template) => ({
+  type: ADD_INGREDS_INPUT,
+  payload: template
+})
