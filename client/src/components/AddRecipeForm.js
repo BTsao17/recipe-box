@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchCuisines } from '../actions';
-import { addIngredsInput } from '../actions';
+import { addIngredInput, addStepInput } from '../actions';
 
 class AddRecipeForm extends React.Component {
   constructor(props) {
@@ -107,24 +107,18 @@ class AddRecipeForm extends React.Component {
   addMoreIngredInput = () => {
     // once this is clicked, add one more object with empty values into ingredients array state
     //generate html <ul> options to add to the rendering - ingredientsListTemplate
-   
+
     const ingredientsObjTemplate = { name: '', quantity: '', unit: '' }; //necessary? or better take from redux store
-    this.props.addIngredsInput(ingredientsObjTemplate);
+    this.props.addIngredInput(ingredientsObjTemplate);
   };
 
-  addMoreStepsInput = (e) => {
-    const stepNum = [ ...this.state.procedure ].length + 1;
+  addMoreStepsInput = () => {
+    const stepNum = [ ...this.props.newRecipe.procedure ].length + 1;
     const procedureObjTemplate = { step: stepNum, description: '' };
-    let newArr = JSON.parse(JSON.stringify(this.state.procedure));
-    newArr.push(procedureObjTemplate);
-    console.log(newArr);
-
-    this.setState({
-      procedure: newArr,
-    });
+    this.props.addStepInput(procedureObjTemplate);
   };
 
-  addMoreNotesInput = (e) => {
+  addMoreNotesInput = () => {
     const noteID = [ ...this.state.notes ].length + 1; //temp id number based on index. May just have it generated in db in the end.
     const noteObjTemplate = { id: noteID, text: '' };
     let newArr = JSON.parse(JSON.stringify(this.state.notes));
@@ -211,7 +205,7 @@ class AddRecipeForm extends React.Component {
 
   render() {
     const { dishTypes, cuisines, newRecipe } = this.props;
-    console.log('redux recipe state', newRecipe)
+    console.log('redux recipe state', newRecipe);
 
     const cuisineOptions = this.generateListOptions(cuisines);
     const dishTypeOptions = this.generateListOptions(dishTypes);
@@ -253,7 +247,7 @@ class AddRecipeForm extends React.Component {
     });
 
     //default key is set with index - may need to change once database is set, key will be primary key
-    const procedureTemplate = this.state.procedure.map((step, index) => {
+    const procedureTemplate = newRecipe.procedure.map((step, index) => {
       return (
         <li key={index}>
           <textarea
@@ -370,7 +364,8 @@ class AddRecipeForm extends React.Component {
           <input
             type="button"
             value="Add more steps"
-            onClick={(e) => this.addMoreInput(e, 'procedure', { step: undefined, description: '' })}
+            // onClick={(e) => this.addMoreInput(e, 'procedure', { step: undefined, description: '' })}
+            onClick={this.addMoreStepsInput}
           />
           <br />
           Notes:
@@ -379,7 +374,8 @@ class AddRecipeForm extends React.Component {
           <input
             type="button"
             value="Add more notes"
-            onClick={(e) => this.addMoreInput(e, 'notes', { id: undefined, text: '' })}
+            // onClick={(e) => this.addMoreInput(e, 'notes', { id: undefined, text: '' })}
+            onClick={this.addMoreNotesInput}
           />
           <br />
           <button form="newRecipe" type="submit" onClick={this.handeleSubmit}>
@@ -395,13 +391,14 @@ function mapStateToProps(state) {
   return {
     dishTypes: state.dishTypes.items,
     cuisines: state.cuisines.items,
-    newRecipe: state.newRecipe
+    newRecipe: state.newRecipe,
   };
 }
 
 const mapDispatchToProps = {
   fetchCuisines,
-  addIngredsInput,
+  addIngredInput,
+  addStepInput
 };
 //export default AddRecipeForm;
 export default connect(mapStateToProps, mapDispatchToProps)(AddRecipeForm);

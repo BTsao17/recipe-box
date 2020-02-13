@@ -1,4 +1,4 @@
-import { ADD_INGREDS_INPUT } from '../actions';
+import { ADD_INGRED_INPUT, ADD_STEP_INPUT } from '../actions';
 
 const initialState = {
   title: '',
@@ -49,11 +49,16 @@ const initialState = {
 
 function newRecipe(state = initialState, action) {
   switch (action.type) {
-    case ADD_INGREDS_INPUT:
+    case ADD_INGRED_INPUT:
       return {
         ...state,
         ingredients: [...state.ingredients, action.payload]
       };
+    case ADD_STEP_INPUT:
+      return {
+        ...state,
+        procedure: [...state.procedure, action.payload]
+      }
     default:
       return state;
   }
