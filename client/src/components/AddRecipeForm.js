@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchCuisines } from '../actions';
-import { addIngredInput, addStepInput } from '../actions';
+import { addIngredInput, addStepInput, addNoteInput } from '../actions';
 
 class AddRecipeForm extends React.Component {
   constructor(props) {
@@ -119,15 +119,17 @@ class AddRecipeForm extends React.Component {
   };
 
   addMoreNotesInput = () => {
-    const noteID = [ ...this.state.notes ].length + 1; //temp id number based on index. May just have it generated in db in the end.
+    const noteID = [ ...this.props.newRecipe.notes ].length + 1; //temp id number based on index. May just have it generated in db in the end.
     const noteObjTemplate = { id: noteID, text: '' };
-    let newArr = JSON.parse(JSON.stringify(this.state.notes));
-    newArr.push(noteObjTemplate);
-    console.log(newArr);
+    // let newArr = JSON.parse(JSON.stringify(this.state.notes));
+    // newArr.push(noteObjTemplate);
+    // console.log(newArr);
 
-    this.setState({
-      notes: newArr,
-    });
+    // this.setState({
+    //   notes: newArr,
+    // });
+
+    this.props.addNoteInput(noteObjTemplate);
   };
 
   //combined addMoreNotes and addMoreSteps functions into one.
@@ -262,7 +264,7 @@ class AddRecipeForm extends React.Component {
     });
 
     //default key is set with index - may need to change once database is set, key will be primary key
-    const noteTemplate = this.state.notes.map((note, index) => {
+    const noteTemplate = newRecipe.notes.map((note, index) => {
       return (
         <li key={index}>
           <textarea
@@ -398,7 +400,8 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
   fetchCuisines,
   addIngredInput,
-  addStepInput
+  addStepInput,
+  addNoteInput,
 };
 //export default AddRecipeForm;
 export default connect(mapStateToProps, mapDispatchToProps)(AddRecipeForm);
