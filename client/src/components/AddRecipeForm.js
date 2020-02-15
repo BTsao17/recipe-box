@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchCuisines } from '../actions';
-import { addIngredInput, addStepInput, addNoteInput } from '../actions';
+import { addIngredInput, addStepInput, addNoteInput, addChange } from '../actions';
 
 class AddRecipeForm extends React.Component {
   constructor(props) {
@@ -62,10 +62,10 @@ class AddRecipeForm extends React.Component {
     }
   }
 
+  //is it possible to write one function that takes care of all changes?
   handleChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
+    const {name, value} = e.target;
+    this.props.addChange(name, value);
   };
 
   //handle changes to state where it's an array
@@ -121,18 +121,10 @@ class AddRecipeForm extends React.Component {
   addMoreNotesInput = () => {
     const noteID = [ ...this.props.newRecipe.notes ].length + 1; //temp id number based on index. May just have it generated in db in the end.
     const noteObjTemplate = { id: noteID, text: '' };
-    // let newArr = JSON.parse(JSON.stringify(this.state.notes));
-    // newArr.push(noteObjTemplate);
-    // console.log(newArr);
-
-    // this.setState({
-    //   notes: newArr,
-    // });
-
     this.props.addNoteInput(noteObjTemplate);
   };
 
-  //combined addMoreNotes and addMoreSteps functions into one.
+  //combined addMoreNotes and addMoreSteps functions into one - not yet changed for redux.
   addMoreInput = (e, type, template) => {
     const refNum = [ ...this.state[type] ].length + 1;
     const keys = Object.keys(template);
@@ -287,7 +279,7 @@ class AddRecipeForm extends React.Component {
             name="title"
             type="text"
             placeholder="Recipe Title"
-            value={this.state.title}
+            value={newRecipe.title}
             onChange={this.handleChange}
           />
           <br />
@@ -297,7 +289,7 @@ class AddRecipeForm extends React.Component {
             list="cuisines"
             type="text"
             placeholder="Cuisine"
-            value={this.state.cuisine}
+            value={newRecipe.cuisine}
             onChange={this.handleChange}
           />
           <datalist id="cuisines">{cuisineOptions}</datalist>
@@ -308,7 +300,7 @@ class AddRecipeForm extends React.Component {
             list="dishTypes"
             type="text"
             placeholder="Dish Type"
-            value={this.state.dish}
+            value={newRecipe.dish}
             onChange={this.handleChange}
           />
           <datalist id="dishTypes">{dishTypeOptions}</datalist>
@@ -402,6 +394,7 @@ const mapDispatchToProps = {
   addIngredInput,
   addStepInput,
   addNoteInput,
+  addChange,
 };
 //export default AddRecipeForm;
 export default connect(mapStateToProps, mapDispatchToProps)(AddRecipeForm);

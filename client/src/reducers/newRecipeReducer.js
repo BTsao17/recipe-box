@@ -1,4 +1,4 @@
-import { ADD_INGRED_INPUT, ADD_STEP_INPUT, ADD_NOTE_INPUT } from '../actions';
+import { ADD_INGRED_INPUT, ADD_STEP_INPUT, ADD_NOTE_INPUT, ADD_CHANGE } from '../actions';
 
 const initialState = {
   title: '',
@@ -47,6 +47,7 @@ const initialState = {
   ],
 };
 
+//may need to separate reducers
 function newRecipe(state = initialState, action) {
   switch (action.type) {
     case ADD_INGRED_INPUT:
@@ -64,6 +65,11 @@ function newRecipe(state = initialState, action) {
         ...state,
         notes: [ ...state.notes, action.payload ],
       };
+    case ADD_CHANGE:
+      return {
+        ...state,
+        [action.inputName]: action.inputValue
+      }
     default:
       return state;
   }

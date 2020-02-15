@@ -132,6 +132,7 @@ export const fetchRecipeDetails = (type, id, title) => {
 export const ADD_INGRED_INPUT = 'ADD_INGRED_INPUT';
 export const ADD_STEP_INPUT = 'ADD_STEP_INPUT';
 export const ADD_NOTE_INPUT = 'ADD_NOTE_INPUT';
+export const ADD_CHANGE = 'ADD_CHANGE';
 
 export const addIngredInput = (template) => ({
   type: ADD_INGRED_INPUT,
@@ -144,4 +145,9 @@ export const addStepInput = (template) => ({
 export const addNoteInput = (template) => ({
   type: ADD_NOTE_INPUT,
   payload: template,
+});
+export const addChange = (inputName, inputValue) => ({
+  type: ADD_CHANGE,
+  inputName,
+  inputValue,
 });
