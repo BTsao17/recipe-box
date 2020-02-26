@@ -1,4 +1,4 @@
-import { ADD_INGRED_INPUT, ADD_STEP_INPUT, ADD_NOTE_INPUT, ADD_CHANGE } from '../actions';
+import { ADD_INGRED_INPUT, ADD_STEP_INPUT, ADD_NOTE_INPUT, ADD_CHANGE, ADD_ARRAY_CHANGE } from '../actions';
 
 const initialState = {
   title: '',
@@ -48,6 +48,7 @@ const initialState = {
 };
 
 //may need to separate reducers
+//future consideration: use immutability-helper or Immer
 function newRecipe(state = initialState, action) {
   switch (action.type) {
     case ADD_INGRED_INPUT:
@@ -68,8 +69,26 @@ function newRecipe(state = initialState, action) {
     case ADD_CHANGE:
       return {
         ...state,
-        [action.inputName]: action.inputValue
-      }
+        [action.inputName]: action.inputValue,
+      };
+    //is there a better way to track changes rather than by character
+    case ADD_ARRAY_CHANGE:
+      const { inputType, inputIndex, inputName, inputValue } = action;
+      //map through the part of the state  to find the key and change the value
+      const infoUpdate = { ...state }[inputType].map((item, i) => {
+        const keys = Object.keys(item);
+        if (i === parseInt(inputIndex) && keys.includes(inputName)) {
+          return {
+            ...item,
+            [inputName]: inputValue,
+          };
+        }
+        return item;
+      });
+      return {
+        ...state,
+        [action.inputType]: infoUpdate,
+      };
     default:
       return state;
   }

@@ -1,22 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchCuisines } from '../actions';
-import { addIngredInput, addStepInput, addNoteInput, addChange } from '../actions';
+import { addIngredInput, addStepInput, addNoteInput, addChange, addArrayChange } from '../actions';
 
 class AddRecipeForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: '',
+      title: 'component state',
       cuisine: '',
-      dish: '',
+      dish: 'Meats',
       time: [
         {
-          prep: '',
+          prep: '8',
           unit: 'minutes',
         },
         {
-          cook: '',
+          cook: '9',
           unit: 'minutes',
         },
       ],
@@ -73,21 +73,7 @@ class AddRecipeForm extends React.Component {
   handleChangeArr = (e) => {
     const { name, value } = e.target;
     const { type, index } = e.target.dataset; //to call for data-* custom attributes
-    //console.log(type, index, name, value);
-
-    let copyArr = [ ...this.state[type] ]; //problem is that this isn't a deep copy.
-
-    //alt: json parse and stringify....an ugly solution, and doesn't copy methods, so will probably be an issue.  Look into immutability-helper
-    let newArr = JSON.parse(JSON.stringify(this.state[type]));
-    newArr[index][name] = value;
-
-    // console.log(this.state[type]);
-    // console.log(newArr2);
-
-    //number in the state will be a string - need to figure out how to word conditional to change to number data type.
-    this.setState({
-      [type]: newArr,
-    });
+    this.props.addArrayChange(type, index, name, value);
   };
 
   //depending on how id is generated (if in DB), may be changing the structure of notes into a simple array. that's why it's a separate function.
@@ -264,7 +250,8 @@ class AddRecipeForm extends React.Component {
             data-index={index}
             name="text"
             value={note.text}
-            onChange={this.handleChangeNotesArr}
+            // onChange={this.handleChangeNotesArr}
+            onChange={this.handleChangeArr}
           />
         </li>
       );
@@ -312,14 +299,14 @@ class AddRecipeForm extends React.Component {
             name="prep"
             type="number" //when set state, it automatically becomes a string.
             min="0"
-            value={this.state.time[0].prep}
+            value={newRecipe.time[0].prep}
             onChange={this.handleChangeArr}
           />
           <select
             data-type="time"
             data-index="0"
             name="unit"
-            value={this.state.time[0].unit}
+            value={newRecipe.time[0].unit}
             onChange={this.handleChangeArr}
           >
             <option value="minutes">minutes</option>
@@ -333,14 +320,14 @@ class AddRecipeForm extends React.Component {
             name="cook"
             type="number" //when set state, it automatically becomes a string.
             min="0"
-            value={this.state.time[1].cook}
+            value={newRecipe.time[1].cook}
             onChange={this.handleChangeArr}
           />
           <select
             data-type="time"
             data-index="1"
             name="unit"
-            value={this.state.time[1].unit}
+            value={newRecipe.time[1].unit}
             onChange={this.handleChangeArr}
           >
             <option value="minutes">minutes</option>
@@ -395,6 +382,7 @@ const mapDispatchToProps = {
   addStepInput,
   addNoteInput,
   addChange,
+  addArrayChange
 };
 //export default AddRecipeForm;
 export default connect(mapStateToProps, mapDispatchToProps)(AddRecipeForm);

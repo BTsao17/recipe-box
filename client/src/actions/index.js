@@ -133,6 +133,7 @@ export const ADD_INGRED_INPUT = 'ADD_INGRED_INPUT';
 export const ADD_STEP_INPUT = 'ADD_STEP_INPUT';
 export const ADD_NOTE_INPUT = 'ADD_NOTE_INPUT';
 export const ADD_CHANGE = 'ADD_CHANGE';
+export const ADD_ARRAY_CHANGE = 'ADD_ARRAY_CHANGE'
 
 export const addIngredInput = (template) => ({
   type: ADD_INGRED_INPUT,
@@ -146,8 +147,17 @@ export const addNoteInput = (template) => ({
   type: ADD_NOTE_INPUT,
   payload: template,
 });
+
+//consider using payload: {inputName, inputValue} ? 
 export const addChange = (inputName, inputValue) => ({
   type: ADD_CHANGE,
   inputName,
   inputValue,
 });
+export const addArrayChange = (inputType, inputIndex, inputName, inputValue) => ({
+  type: ADD_ARRAY_CHANGE,
+  inputName,
+  inputValue,
+  inputType,
+  inputIndex,
+})
