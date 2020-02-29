@@ -372,7 +372,7 @@ function mapStateToProps(state) {
   return {
     dishTypes: state.dishTypes.items,
     cuisines: state.cuisines.items,
-    newRecipe: state.newRecipe,
+    newRecipe: state.newRecipe.recipe,
   };
 }
 
