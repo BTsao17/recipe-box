@@ -19,30 +19,30 @@ class App extends React.Component {
     });
   }
 
-  saveRecipe = (newRecipe) => {
-    //need to temp provide an id # for recipe, til db is set up.
-    const data = { ...newRecipe };
-    data.id = Math.floor(Math.random() * 1000);
+  // saveRecipe = (newRecipe) => {
+  //   //need to temp provide an id # for recipe, til db is set up.
+  //   const data = { ...newRecipe };
+  //   data.id = Math.floor(Math.random() * 1000);
 
-    //make sure all cuisine and dish data are in the correct case.
-    data.dish = data.dish.toLowerCase(); //all lowercase
-    data.cuisine = data.cuisine.charAt(0).toUpperCase() + data.cuisine.slice(1); //first letter is uppercase
+  //   //make sure all cuisine and dish data are in the correct case.
+  //   data.dish = data.dish.toLowerCase(); //all lowercase
+  //   data.cuisine = data.cuisine.charAt(0).toUpperCase() + data.cuisine.slice(1); //first letter is uppercase
 
-    //API post req to server, response is only the new recipe
-    axios
-      .post('http://localhost:8080/recipe', data)
-      .then((response) => {
-        const newTitleID = response.data;
-        const newList = [ ...this.state.recipeTitleIDList ].concat(newTitleID);
-        this.setState({
-          recipeTitleIDList: newList,
-        });
-        console.log(this.state.recipeTitleIDList);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  //   //API post req to server, response is only the new recipe
+  //   axios
+  //     .post('http://localhost:8080/recipe', data)
+  //     .then((response) => {
+  //       const newTitleID = response.data;
+  //       const newList = [ ...this.state.recipeTitleIDList ].concat(newTitleID);
+  //       this.setState({
+  //         recipeTitleIDList: newList,
+  //       });
+  //       console.log(this.state.recipeTitleIDList);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   render() {
     const { dishTypes } = this.props; //changed from this.state
@@ -79,7 +79,7 @@ class App extends React.Component {
           <Switch>
             {/* Not using React Hooks, so use render rather than child */}
             <Route exact path="/" render={() => <HomeTab />} />
-            <Route exact path="/newRecipe" render={() => <AddRecipeForm saveRecipe={this.saveRecipe} />} />
+            <Route exact path="/newRecipe" render={() => <AddRecipeForm />} />
             {/* dynamic pages */}
             <Route exact path="/:type" render={(routeProps) => <RecipeTabTemplate {...routeProps} />} />
             <Route exact path="/:type/:id/:recipe" render={(routeProps) => <RecipeDetailsTemplate {...routeProps} />} />

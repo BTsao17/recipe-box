@@ -1,57 +1,57 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchCuisines } from '../actions';
-import { addIngredInput, addStepInput, addNoteInput, addChange, addArrayChange } from '../actions';
+import { addIngredInput, addStepInput, addNoteInput, addChange, addArrayChange, saveRecipe } from '../actions';
 
 class AddRecipeForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: 'component state',
-      cuisine: '',
-      dish: 'Meats',
-      time: [
-        {
-          prep: '8',
-          unit: 'minutes',
-        },
-        {
-          cook: '9',
-          unit: 'minutes',
-        },
-      ],
-      ingredients: [
-        //not sure how id will work, or if it's needed.
-        {
-          name: '',
-          quantity: '',
-          unit: '',
-        },
-        {
-          name: '',
-          quantity: '',
-          unit: '',
-        },
-      ],
-      procedure: [
-        //might need id in the future?
-        {
-          step: 1,
-          description: '',
-        },
-        {
-          step: 2,
-          description: '',
-        },
-      ],
-      notes: [
-        {
-          id: 1, //arbitrary num for now. Might change once DB is set up.
-          text: '',
-        },
-      ],
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     title: 'component state',
+  //     cuisine: '',
+  //     dish: 'Meats',
+  //     time: [
+  //       {
+  //         prep: '8',
+  //         unit: 'minutes',
+  //       },
+  //       {
+  //         cook: '9',
+  //         unit: 'minutes',
+  //       },
+  //     ],
+  //     ingredients: [
+  //       //not sure how id will work, or if it's needed.
+  //       {
+  //         name: '',
+  //         quantity: '',
+  //         unit: '',
+  //       },
+  //       {
+  //         name: '',
+  //         quantity: '',
+  //         unit: '',
+  //       },
+  //     ],
+  //     procedure: [
+  //       //might need id in the future?
+  //       {
+  //         step: 1,
+  //         description: '',
+  //       },
+  //       {
+  //         step: 2,
+  //         description: '',
+  //       },
+  //     ],
+  //     notes: [
+  //       {
+  //         id: 1, //arbitrary num for now. Might change once DB is set up.
+  //         text: '',
+  //       },
+  //     ],
+  //   };
+  // }
 
   componentDidMount() {
     //console.log(this.props.cuisines);
@@ -127,52 +127,54 @@ class AddRecipeForm extends React.Component {
   };
 
   handeleSubmit = (e) => {
-    e.preventDefault();
-    const newRecipe = this.state;
-    this.props.saveRecipe(newRecipe);
-    this.setState({
-      title: '',
-      cuisine: '',
-      dish: '',
-      time: [
-        {
-          prep: '',
-          unit: 'minutes',
-        },
-        {
-          cook: '',
-          unit: 'minutes',
-        },
-      ],
-      ingredients: [
-        {
-          name: '',
-          quantity: '',
-          unit: '',
-        },
-        {
-          name: '',
-          quantity: '',
-          unit: '',
-        },
-      ],
-      procedure: [
-        {
-          step: 1,
-          description: '',
-        },
-        {
-          step: 2,
-          description: '',
-        },
-      ],
-      notes: [
-        {
-          id: 1,
-          text: '',
-        },
-      ],
-    });
+    e.preventDefault(); //not sure if this is necessary? keep it for now
+
+    this.props.saveRecipe(this.props.newRecipe);
+    // const newRecipe = this.state;
+    // this.props.saveRecipe(newRecipe);
+    // this.setState({
+    //   title: '',
+    //   cuisine: '',
+    //   dish: '',
+    //   time: [
+    //     {
+    //       prep: '',
+    //       unit: 'minutes',
+    //     },
+    //     {
+    //       cook: '',
+    //       unit: 'minutes',
+    //     },
+    //   ],
+    //   ingredients: [
+    //     {
+    //       name: '',
+    //       quantity: '',
+    //       unit: '',
+    //     },
+    //     {
+    //       name: '',
+    //       quantity: '',
+    //       unit: '',
+    //     },
+    //   ],
+    //   procedure: [
+    //     {
+    //       step: 1,
+    //       description: '',
+    //     },
+    //     {
+    //       step: 2,
+    //       description: '',
+    //     },
+    //   ],
+    //   notes: [
+    //     {
+    //       id: 1,
+    //       text: '',
+    //     },
+    //   ],
+    // });
   };
 
   //datalist option is supported only in some browsers
@@ -382,7 +384,8 @@ const mapDispatchToProps = {
   addStepInput,
   addNoteInput,
   addChange,
-  addArrayChange
+  addArrayChange,
+  saveRecipe
 };
 //export default AddRecipeForm;
 export default connect(mapStateToProps, mapDispatchToProps)(AddRecipeForm);

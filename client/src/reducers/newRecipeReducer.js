@@ -9,8 +9,6 @@ import {
   SAVE_NEW_RECIPE_TO_SERVER_FAILURE,
 } from '../actions';
 
-//may need to reorganize state for post req. One layer down? T_T,
-// unless I want to try some magic with deleting the loading and error before posting.
 const initialState = {
   recipe: {
     title: '',
@@ -119,6 +117,25 @@ function newRecipe(state = initialState, action) {
           ...state.recipe,
           [action.inputType]: infoUpdate,
         },
+      };
+    case SAVE_NEW_RECIPE_TO_SERVER_BEGIN:
+      return {
+        ...state,
+        loading: true,
+      };
+    case SAVE_NEW_RECIPE_TO_SERVER_SUCCESS:
+      const blankRecipeForm = { ...initialState.recipe };  //immutability-helper?
+      return {
+        ...state,
+        recipe: blankRecipeForm,
+        loading: false,
+      };
+    case SAVE_NEW_RECIPE_TO_SERVER_FAILURE:
+      return {
+        ...state,
+        recipe: blankRecipeForm,
+        loading: false,
+        error: action.payload.error,
       };
     default:
       return state;
