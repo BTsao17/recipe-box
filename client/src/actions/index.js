@@ -176,8 +176,8 @@ const postNewRecipeFailure = (error) => ({
   payload: { error },
 });
 
-export const saveRecipe = (newRecipeState) => {
-  console.log(newRecipeState);
+export const saveRecipe = (newRecipeState, history) => {
+  console.log('newRecipeState', newRecipeState);
   const data = { ...newRecipeState }; //will need immutability helper for deep copy.
   data.id = Math.floor(Math.random() * 1000); //generate random id
 
@@ -191,9 +191,16 @@ export const saveRecipe = (newRecipeState) => {
       .post(`http://localhost:8080/recipe`, data)
       .then((response) => {
         console.log('new recipe dets', response.data);
-        dispatch(postNewRecipeSuccess(response.data)); //to return state to default empty stuff.
-        // need another dispatch to the recipe list reducer to add the response data to the list.
-        // return response.data;
+        dispatch(postNewRecipeSuccess(response.data));
+
+        //to redirect to details page - set up
+        let { title, id, dish } = response.data;
+        //change first letter of dish to capital
+        dish = dish.charAt(0).toUpperCase() + dish.slice(1);
+        //change title to lower case with dash, if more than one word
+        title = title.toLowerCase().split(' ').join('-');
+        history.push(`${dish}/${id}/${title}`);
+        return response.data;
       })
       .catch((error) => dispatch(postNewRecipeFailure(error)));
   };

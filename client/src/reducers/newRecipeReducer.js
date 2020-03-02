@@ -124,16 +124,15 @@ function newRecipe(state = initialState, action) {
         loading: true,
       };
     case SAVE_NEW_RECIPE_TO_SERVER_SUCCESS:
-      const blankRecipeForm = { ...initialState.recipe };  //immutability-helper?
       return {
         ...state,
-        recipe: blankRecipeForm,
+        recipe: {...initialState.recipe}, //immer or immutability helper? - requires deep copy
         loading: false,
       };
     case SAVE_NEW_RECIPE_TO_SERVER_FAILURE:
       return {
         ...state,
-        recipe: blankRecipeForm,
+        recipe: {...initialState.recipe},
         loading: false,
         error: action.payload.error,
       };

@@ -129,7 +129,9 @@ class AddRecipeForm extends React.Component {
   handeleSubmit = (e) => {
     e.preventDefault(); //not sure if this is necessary? keep it for now
 
-    this.props.saveRecipe(this.props.newRecipe);
+  
+
+    this.props.saveRecipe(this.props.newRecipe, this.props.history);
     // const newRecipe = this.state;
     // this.props.saveRecipe(newRecipe);
     // this.setState({

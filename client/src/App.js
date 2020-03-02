@@ -79,7 +79,7 @@ class App extends React.Component {
           <Switch>
             {/* Not using React Hooks, so use render rather than child */}
             <Route exact path="/" render={() => <HomeTab />} />
-            <Route exact path="/newRecipe" render={() => <AddRecipeForm />} />
+            <Route exact path="/newRecipe" render={(routeProps) => <AddRecipeForm {...routeProps}/>} />
             {/* dynamic pages */}
             <Route exact path="/:type" render={(routeProps) => <RecipeTabTemplate {...routeProps} />} />
             <Route exact path="/:type/:id/:recipe" render={(routeProps) => <RecipeDetailsTemplate {...routeProps} />} />
