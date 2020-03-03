@@ -46,7 +46,7 @@ class RecipeDetailsTemplate extends React.Component {
             <Procedure procedure={recipe.procedure} />
             <Notes notes={recipe.notes} />
           </article>
-          <button onClick={() => this.props.history.goBack()}>Back to {type}</button>
+          <button onClick={() => this.props.history.push(`/${type}`)}>Back to {type}</button>
         </React.Fragment>
       );
     }
