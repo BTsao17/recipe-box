@@ -16,15 +16,16 @@ function recipeDetails(state = initialState, action) {
     case FETCH_DETS_SUCCESS:
       return {
         ...state,
-        loading: false,
         details: action.payload.recipeDetails,
+        loading: false,
+        error: null,
       };
     case FETCH_DETS_FAILURE:
       return {
         ...state,
-        loading: false,
-        error: action.payload.error,
         details: {},
+        loading: false,
+        error: action.payload.error.response,
       };
     default:
       return state;

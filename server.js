@@ -53,7 +53,8 @@ app.get('/:type', (req, res) => {
   const type = req.params.type.toLowerCase();
   const recipeList = recipes.reduce((acc, cV) => {
     if (cV.dish === type) {
-      const titleIDType = (({ title, id, dish }) => ({ title, id, dish}))(cV);
+      // const titleIDType = ((recipe) => ({title: recipe.title, id: recipe.id, dish: recipe.dish}))(cV);
+      const titleIDType = (({ title, id, dish }) => ({ title, id, dish }))(cV);
       acc.push(titleIDType);
     }
     return acc;
@@ -61,7 +62,16 @@ app.get('/:type', (req, res) => {
 
   console.log(recipeList);
 
-  res.json(recipeList);
+  //need to throw an error if the type given isn't a part of the list in server
+  const dishTypeExists = dishTypes.map((dishType) => dishType.dishType.toLowerCase()).includes(type);
+  console.log(dishTypeExists);
+
+  if (!dishTypeExists) {
+    res.status(404).send(`Dish type, ${type}, doesn't exist.`);
+  }
+  else {
+    res.json(recipeList);
+  }
 });
 
 //recipeDetails, given the id
@@ -79,12 +89,16 @@ app.get('/recipe/:type/:id/:title', (req, res) => {
   );
 
   console.log(recipeDetails);
-  
+  //throw an error is recipe doesn't exist rather than just setting recipeDetails
+  //as an empty object or else the dispatch action is successful.
   if (recipeDetails === undefined) {
-    recipeDetails = {};
+    //recipeDetails = {};
+    //throw new Error(`Recipe doesn't exist.`) //automatic error status 500
+    res.status(404).send(`Recipe doesn't exist.`);
   }
-
-  res.json(recipeDetails);
+  else {
+    res.json(recipeDetails);
+  }
 });
 
 //add new recipe

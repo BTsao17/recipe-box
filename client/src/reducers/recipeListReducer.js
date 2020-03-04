@@ -16,15 +16,16 @@ function recipeList(state = initialState, action) {
     case FETCH_LIST_SUCCESS:
       return {
         ...state,
-        loading: false,
         list: action.payload.recipeList,
+        loading: false,
+        error: null,
       };
     case FETCH_LIST_FAILURE:
       return {
         ...state,
-        loading: false,
-        error: action.payload.error,
         list: [],
+        loading: false,
+        error: action.payload.error.response,
       };
     default:
       return state;
