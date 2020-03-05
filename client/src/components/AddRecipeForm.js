@@ -3,6 +3,11 @@ import { connect } from 'react-redux';
 import { fetchCuisines } from '../actions';
 import { addIngredInput, addStepInput, addNoteInput, addChange, addArrayChange, saveRecipe } from '../actions';
 
+//separation of concerns
+import RecipeTitle from './form/RecipeTitle';
+import Cuisine from './form/Cuisine';
+import Dishtype from './form/Dishtype';
+
 class AddRecipeForm extends React.Component {
   componentDidMount() {
     //console.log(this.props.cuisines);
@@ -82,20 +87,9 @@ class AddRecipeForm extends React.Component {
     this.props.saveRecipe(this.props.newRecipe, this.props.history);
   };
 
-  //datalist option is supported only in some browsers
-  //default key is set with index - may need to change once database is set
-  generateListOptions = (listType) => {
-    return listType.map((type) => {
-      return <option key={type} value={type} />;
-    });
-  };
-
   render() {
     const { dishTypes, cuisines, newRecipe } = this.props;
     console.log('redux recipe state', newRecipe);
-
-    const cuisineOptions = this.generateListOptions(cuisines);
-    const dishTypeOptions = this.generateListOptions(dishTypes);
 
     //default key is set with index - will need to change once database is set
     const ingredientsListTemplate = newRecipe.ingredients.map((ingredient, index) => {
@@ -168,37 +162,9 @@ class AddRecipeForm extends React.Component {
       <React.Fragment>
         <h1>Recipe Form</h1>
         <form id="newRecipe">
-          <label htmlFor="title">Title:</label>
-          <input
-            name="title"
-            type="text"
-            placeholder="Recipe Title"
-            value={newRecipe.title}
-            onChange={this.handleChange}
-          />
-          <br />
-          <label htmlFor="cuisine">Cuisine:</label>
-          <input
-            name="cuisine"
-            list="cuisines"
-            type="text"
-            placeholder="Cuisine"
-            value={newRecipe.cuisine}
-            onChange={this.handleChange}
-          />
-          <datalist id="cuisines">{cuisineOptions}</datalist>
-          <br />
-          <label htmlFor="dish">Dish Type:</label>
-          <input
-            name="dish"
-            list="dishTypes"
-            type="text"
-            placeholder="Dish Type"
-            value={newRecipe.dish}
-            onChange={this.handleChange}
-          />
-          <datalist id="dishTypes">{dishTypeOptions}</datalist>
-          <br />
+          <RecipeTitle title={newRecipe.title} handleChange={this.handleChange} />
+          <Cuisine cuisine={newRecipe.cuisine} handleChange={this.handleChange} cuisineList={cuisines} />
+          <Dishtype dish={newRecipe.dish} handleChange={this.handleChange} dishList={dishTypes} />
           <label htmlFor="prep">Prep Time:</label>
           <input
             data-type="time"
