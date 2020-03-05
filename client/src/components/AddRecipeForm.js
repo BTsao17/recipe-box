@@ -4,7 +4,6 @@ import { fetchCuisines } from '../actions';
 import { addIngredInput, addStepInput, addNoteInput, addChange, addArrayChange, saveRecipe } from '../actions';
 
 class AddRecipeForm extends React.Component {
-
   componentDidMount() {
     //console.log(this.props.cuisines);
     //console.log(Boolean(this.props.cuisines.length));
@@ -16,7 +15,7 @@ class AddRecipeForm extends React.Component {
 
   //is it possible to write one function that takes care of all changes?
   handleChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
     this.props.addChange(name, value);
   };
 
@@ -169,7 +168,7 @@ class AddRecipeForm extends React.Component {
       <React.Fragment>
         <h1>Recipe Form</h1>
         <form id="newRecipe">
-          Title:
+          <label htmlFor="title">Title:</label>
           <input
             name="title"
             type="text"
@@ -178,7 +177,7 @@ class AddRecipeForm extends React.Component {
             onChange={this.handleChange}
           />
           <br />
-          Cuisine:
+          <label htmlFor="cuisine">Cuisine:</label>
           <input
             name="cuisine"
             list="cuisines"
@@ -189,7 +188,7 @@ class AddRecipeForm extends React.Component {
           />
           <datalist id="cuisines">{cuisineOptions}</datalist>
           <br />
-          Dish Type:
+          <label htmlFor="dish">Dish Type:</label>
           <input
             name="dish"
             list="dishTypes"
@@ -200,7 +199,7 @@ class AddRecipeForm extends React.Component {
           />
           <datalist id="dishTypes">{dishTypeOptions}</datalist>
           <br />
-          Prep Time:
+          <label htmlFor="prep">Prep Time:</label>
           <input
             data-type="time"
             data-index="0"
@@ -221,7 +220,7 @@ class AddRecipeForm extends React.Component {
             <option value="hours">hours</option>
           </select>
           <br />
-          Cook Time:
+          <label htmlFor="cook">Cook Time:</label>
           <input
             data-type="time"
             data-index="1"
@@ -242,12 +241,12 @@ class AddRecipeForm extends React.Component {
             <option value="hours">hours</option>
           </select>
           <br />
-          Ingredients:
+          <label>Ingredients:</label>
           <br />
           <ul>{ingredientsListTemplate}</ul>
           <input type="button" value="Add more ingredients" onClick={this.addMoreIngredInput} />
           <br />
-          Procedure:
+          <label>Procedure:</label>
           <br />
           <ol>{procedureTemplate}</ol>
           <input
@@ -257,7 +256,7 @@ class AddRecipeForm extends React.Component {
             onClick={this.addMoreStepsInput}
           />
           <br />
-          Notes:
+          <label>Notes:</label>
           <br />
           <ul>{noteTemplate}</ul>
           <input
@@ -291,7 +290,7 @@ const mapDispatchToProps = {
   addNoteInput,
   addChange,
   addArrayChange,
-  saveRecipe
+  saveRecipe,
 };
 //export default AddRecipeForm;
 export default connect(mapStateToProps, mapDispatchToProps)(AddRecipeForm);
