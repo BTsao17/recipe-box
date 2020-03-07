@@ -7,6 +7,10 @@ import { addIngredInput, addStepInput, addNoteInput, addChange, addArrayChange, 
 import RecipeTitle from './form/RecipeTitle';
 import Cuisine from './form/Cuisine';
 import Dishtype from './form/Dishtype';
+import Time from './form/Time';
+import Ingredients from './form/Ingredients';
+import Procedure from './form/Procedure';
+import Notes from './form/Notes';
 
 class AddRecipeForm extends React.Component {
   componentDidMount() {
@@ -91,73 +95,6 @@ class AddRecipeForm extends React.Component {
     const { dishTypes, cuisines, newRecipe } = this.props;
     console.log('redux recipe state', newRecipe);
 
-    //default key is set with index - will need to change once database is set
-    const ingredientsListTemplate = newRecipe.ingredients.map((ingredient, index) => {
-      return (
-        <li key={index}>
-          <input
-            data-type="ingredients"
-            data-index={index}
-            name="quantity"
-            type="text" //better if the type is number, but when set state, it automatically becomes a string.
-            placeholder="quantity"
-            onChange={this.handleChangeArr}
-            value={ingredient.quantity}
-          />
-          <input
-            data-type="ingredients"
-            data-index={index}
-            name="unit"
-            type="text"
-            placeholder="unit of measurement"
-            onChange={this.handleChangeArr}
-            value={ingredient.unit}
-          />
-          {/* may want a datalist of measurements to choose from */}
-          <input
-            data-type="ingredients"
-            data-index={index}
-            name="name"
-            type="text"
-            placeholder="Ingredient"
-            value={ingredient.name}
-            onChange={this.handleChangeArr}
-          />
-        </li>
-      );
-    });
-
-    //default key is set with index - may need to change once database is set, key will be primary key
-    const procedureTemplate = newRecipe.procedure.map((step, index) => {
-      return (
-        <li key={index}>
-          <textarea
-            data-type="procedure"
-            data-index={index}
-            name="description"
-            value={step.description}
-            onChange={this.handleChangeArr}
-          />
-        </li>
-      );
-    });
-
-    //default key is set with index - may need to change once database is set, key will be primary key
-    const noteTemplate = newRecipe.notes.map((note, index) => {
-      return (
-        <li key={index}>
-          <textarea
-            data-type="notes"
-            data-index={index}
-            name="text"
-            value={note.text}
-            // onChange={this.handleChangeNotesArr}
-            onChange={this.handleChangeArr}
-          />
-        </li>
-      );
-    });
-
     return (
       <React.Fragment>
         <h1>Recipe Form</h1>
@@ -165,73 +102,26 @@ class AddRecipeForm extends React.Component {
           <RecipeTitle title={newRecipe.title} handleChange={this.handleChange} />
           <Cuisine cuisine={newRecipe.cuisine} handleChange={this.handleChange} cuisineList={cuisines} />
           <Dishtype dish={newRecipe.dish} handleChange={this.handleChange} dishList={dishTypes} />
-          <label htmlFor="prep">Prep Time:</label>
-          <input
-            data-type="time"
-            data-index="0"
-            name="prep"
-            type="number" //when set state, it automatically becomes a string.
-            min="0"
-            value={newRecipe.time[0].prep}
-            onChange={this.handleChangeArr}
-          />
-          <select
-            data-type="time"
-            data-index="0"
-            name="unit"
-            value={newRecipe.time[0].unit}
-            onChange={this.handleChangeArr}
-          >
-            <option value="minutes">minutes</option>
-            <option value="hours">hours</option>
-          </select>
-          <br />
-          <label htmlFor="cook">Cook Time:</label>
-          <input
-            data-type="time"
-            data-index="1"
-            name="cook"
-            type="number" //when set state, it automatically becomes a string.
-            min="0"
-            value={newRecipe.time[1].cook}
-            onChange={this.handleChangeArr}
-          />
-          <select
-            data-type="time"
-            data-index="1"
-            name="unit"
-            value={newRecipe.time[1].unit}
-            onChange={this.handleChangeArr}
-          >
-            <option value="minutes">minutes</option>
-            <option value="hours">hours</option>
-          </select>
-          <br />
-          <label>Ingredients:</label>
-          <br />
-          <ul>{ingredientsListTemplate}</ul>
-          <input type="button" value="Add more ingredients" onClick={this.addMoreIngredInput} />
-          <br />
-          <label>Procedure:</label>
-          <br />
-          <ol>{procedureTemplate}</ol>
-          <input
-            type="button"
-            value="Add more steps"
-            // onClick={(e) => this.addMoreInput(e, 'procedure', { step: undefined, description: '' })}
-            onClick={this.addMoreStepsInput}
-          />
-          <br />
-          <label>Notes:</label>
-          <br />
-          <ul>{noteTemplate}</ul>
-          <input
-            type="button"
-            value="Add more notes"
-            // onClick={(e) => this.addMoreInput(e, 'notes', { id: undefined, text: '' })}
-            onClick={this.addMoreNotesInput}
-          />
-          <br />
+          <Time time={newRecipe.time} handleChange={this.handleChangeArr} />
+          <Ingredients ingredients={newRecipe.ingredients} handleChange={this.handleChangeArr}>
+            <input type="button" value="Add more ingredients" onClick={this.addMoreIngredInput} />
+          </Ingredients>
+          <Procedure procedure={newRecipe.procedure} handleChange={this.handleChangeArr}>
+            <input
+              type="button"
+              value="Add more steps"
+              // onClick={(e) => this.addMoreInput(e, 'procedure', { step: undefined, description: '' })}
+              onClick={this.addMoreStepsInput}
+            />
+          </Procedure>
+          <Notes notes={newRecipe.notes} handleChange={this.handleChangeArr}>
+            <input
+              type="button"
+              value="Add more notes"
+              // onClick={(e) => this.addMoreInput(e, 'notes', { id: undefined, text: '' })}
+              onClick={this.addMoreNotesInput}
+            />
+          </Notes>
           <button form="newRecipe" type="submit" onClick={this.handeleSubmit}>
             Save Recipe
           </button>
