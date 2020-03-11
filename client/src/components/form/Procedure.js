@@ -48,7 +48,7 @@ class Procedure extends React.Component {
             name="description"
             value={step.description}
             onChange={this.onChange}
-            onBlur={this.onBlur}
+            onBlur={step.description !== this.props.procedure[index].description ? this.onBlur : null}
           />
         </li>
       );

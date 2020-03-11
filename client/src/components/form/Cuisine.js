@@ -39,7 +39,7 @@ class Cuisine extends React.Component {
           placeholder="Cuisine"
           value={this.state.cuisine}
           onChange={this.onChange}
-          onBlur={this.onBlur}
+          onBlur={this.state.cuisine !== this.props.cuisine ? this.onBlur : null}
         />
         <datalist id="cuisines">{cuisineOptions}</datalist>
       </div>

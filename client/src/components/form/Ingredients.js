@@ -51,7 +51,7 @@ class Ingredients extends React.Component {
             placeholder="quantity"
             value={ingredient.quantity}
             onChange={this.onChange}
-            onBlur={this.onBlur}
+            onBlur={ingredient.quantity !== this.props.ingredients[index].quantity ? this.onBlur : null}
           />
           <input
             data-type="ingredients"
@@ -61,7 +61,7 @@ class Ingredients extends React.Component {
             placeholder="unit of measurement"
             value={ingredient.unit}
             onChange={this.onChange}
-            onBlur={this.onBlur}
+            onBlur={ingredient.unit !== this.props.ingredients[index].unit ? this.onBlur : null}
           />
           {/* may want a datalist of measurements to choose from */}
           <input
@@ -72,7 +72,7 @@ class Ingredients extends React.Component {
             placeholder="Ingredient"
             value={ingredient.name}
             onChange={this.onChange}
-            onBlur={this.onBlur}
+            onBlur={ingredient.name !== this.props.ingredients[index].name ? this.onBlur : null}
           />
         </li>
       );

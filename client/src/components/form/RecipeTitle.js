@@ -4,7 +4,7 @@ class RecipeTitle extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: this.props.title, //makes sure that redux store and local state are identical from the start. 
+      title: this.props.title, //makes sure that redux store and local state are identical from the start.
     };
   }
 
@@ -30,7 +30,7 @@ class RecipeTitle extends React.Component {
           placeholder="Recipe Title"
           value={this.state.title}
           onChange={this.onChange}
-          onBlur={this.onBlur}
+          onBlur={this.state.title !== this.props.title ? this.onBlur : null}
         />
       </div>
     );

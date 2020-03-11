@@ -39,7 +39,7 @@ class Dishtype extends React.Component {
           placeholder="Dish Type"
           value={this.state.dish}
           onChange={this.onChange}
-          onBlur={this.onBlur}
+          onBlur={this.state.dish !== this.props.dish ? this.onBlur : null}
         />
         <datalist id="dishTypes">{dishTypeOptions}</datalist>
       </div>

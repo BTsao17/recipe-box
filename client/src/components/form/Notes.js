@@ -49,7 +49,7 @@ class Notes extends React.Component {
             value={note.text}
             // onChange={this.handleChangeNotesArr}
             onChange={this.onChange}
-            onBlur={this.onBlur}
+            onBlur={note.text !== this.props.notes[index].text ? this.onBlur : null}
           />
         </li>
       );

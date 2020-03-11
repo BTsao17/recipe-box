@@ -40,7 +40,7 @@ class Time extends React.Component {
             min="0"
             value={this.state.time[0].prep}
             onChange={this.onChange}
-            onBlur={this.onBlur}
+            onBlur={this.state.time[0].prep !== this.props.time[0].prep ? this.onBlur : null}
           />
           <select
             data-type="time"
@@ -48,7 +48,7 @@ class Time extends React.Component {
             name="unit"
             value={this.state.time[0].unit}
             onChange={this.onChange}
-            onBlur={this.onBlur}
+            onBlur={this.state.time[0].unit !== this.props.time[0].unit ? this.onBlur : null}
           >
             <option value="minutes">minutes</option>
             <option value="hours">hours</option>
@@ -64,7 +64,7 @@ class Time extends React.Component {
             min="0"
             value={this.state.time[1].cook}
             onChange={this.onChange}
-            onBlur={this.onBlur}
+            onBlur={this.state.time[1].cook !== this.props.time[1].cook ? this.onBlur : null}
           />
           <select
             data-type="time"
@@ -72,7 +72,7 @@ class Time extends React.Component {
             name="unit"
             value={this.state.time[1].unit}
             onChange={this.onChange}
-            onBlur={this.onBlur}
+            onBlur={this.state.time[1].unit !== this.props.time[1].unit ? this.onBlur : null}
           >
             <option value="minutes">minutes</option>
             <option value="hours">hours</option>
