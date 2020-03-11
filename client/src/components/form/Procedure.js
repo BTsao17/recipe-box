@@ -1,4 +1,5 @@
 import React from 'react';
+import update from 'immutability-helper';
 
 class Procedure extends React.Component {
   constructor(props) {
@@ -23,11 +24,10 @@ class Procedure extends React.Component {
     const { name, value } = e.target;
     const { type, index } = e.target.dataset;
 
-    let copyArr = JSON.parse(JSON.stringify(this.state.procedure)); //immutability helper.
-    copyArr[index][name] = value;
+    const newArr = update(this.state.procedure, { [index]: { [name]: { $set: value } } });
 
     this.setState({
-      procedure: copyArr,
+      procedure: newArr,
     });
   };
 

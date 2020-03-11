@@ -1,4 +1,5 @@
 import React from 'react';
+import update from 'immutability-helper';
 
 class Ingredients extends React.Component {
   constructor(props) {
@@ -23,11 +24,10 @@ class Ingredients extends React.Component {
     const { name, value } = e.target;
     const { type, index } = e.target.dataset;
 
-    let copyArr = JSON.parse(JSON.stringify(this.state.ingredients)); //immutability helper.
-    copyArr[index][name] = value;
+    const newArr = update(this.state.ingredients, { [index]: { [name]: { $set: value } } });
 
     this.setState({
-      ingredients: copyArr,
+      ingredients: newArr,
     });
   };
 
