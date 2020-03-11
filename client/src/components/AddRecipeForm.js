@@ -28,11 +28,19 @@ class AddRecipeForm extends React.Component {
     this.props.addChange(name, value);
   };
 
+  updateChange = (name, value) => {
+    this.props.addChange(name, value);
+  };
+
   //handle changes to state where it's an array
   //figure out how to combing handle___Arr functions to make code DRY
   handleChangeArr = (e) => {
     const { name, value } = e.target;
     const { type, index } = e.target.dataset; //to call for data-* custom attributes
+    this.props.addArrayChange(type, index, name, value);
+  };
+
+  updateChangeArr = (type, index, name, value) => {
     this.props.addArrayChange(type, index, name, value);
   };
 
@@ -99,14 +107,14 @@ class AddRecipeForm extends React.Component {
       <React.Fragment>
         <h1>Recipe Form</h1>
         <form id="newRecipe">
-          <RecipeTitle title={newRecipe.title} handleChange={this.handleChange} />
-          <Cuisine cuisine={newRecipe.cuisine} handleChange={this.handleChange} cuisineList={cuisines} />
-          <Dishtype dish={newRecipe.dish} handleChange={this.handleChange} dishList={dishTypes} />
-          <Time time={newRecipe.time} handleChange={this.handleChangeArr} />
-          <Ingredients ingredients={newRecipe.ingredients} handleChange={this.handleChangeArr}>
+          <RecipeTitle title={newRecipe.title} updateChange={this.updateChange} />
+          <Cuisine cuisine={newRecipe.cuisine} cuisineList={cuisines} updateChange={this.updateChange} />
+          <Dishtype dish={newRecipe.dish} dishList={dishTypes} updateChange={this.updateChange} />
+          <Time time={newRecipe.time} updateChange={this.updateChangeArr} />
+          <Ingredients ingredients={newRecipe.ingredients} updateChange={this.updateChangeArr}>
             <input type="button" value="Add more ingredients" onClick={this.addMoreIngredInput} />
           </Ingredients>
-          <Procedure procedure={newRecipe.procedure} handleChange={this.handleChangeArr}>
+          <Procedure procedure={newRecipe.procedure} updateChange={this.updateChangeArr}>
             <input
               type="button"
               value="Add more steps"
@@ -114,7 +122,7 @@ class AddRecipeForm extends React.Component {
               onClick={this.addMoreStepsInput}
             />
           </Procedure>
-          <Notes notes={newRecipe.notes} handleChange={this.handleChangeArr}>
+          <Notes notes={newRecipe.notes} updateChange={this.updateChangeArr}>
             <input
               type="button"
               value="Add more notes"

@@ -1,6 +1,23 @@
 import React from 'react';
 
 class Cuisine extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cuisine: this.props.cuisine,
+    };
+  }
+
+  onChange = (e) => {
+    this.setState({
+      cuisine: e.target.value,
+    });
+  };
+
+  onBlur = (e) => {
+    this.props.updateChange(e.target.name, this.state.cuisine);
+  };
+
   //datalist option is supported only in some browsers
   //default key is set with index - may need to change once database is set
   generateListOptions = (listType) => {
@@ -20,8 +37,9 @@ class Cuisine extends React.Component {
           list="cuisines"
           type="text"
           placeholder="Cuisine"
-          value={this.props.cuisine}
-          onChange={this.props.handleChange}
+          value={this.state.cuisine}
+          onChange={this.onChange}
+          onBlur={this.onBlur}
         />
         <datalist id="cuisines">{cuisineOptions}</datalist>
       </div>
