@@ -47,7 +47,6 @@ class Notes extends React.Component {
             data-index={index}
             name="text"
             value={note.text}
-            // onChange={this.handleChangeNotesArr}
             onChange={this.onChange}
             onBlur={note.text !== this.props.notes[index].text ? this.onBlur : null}
           />

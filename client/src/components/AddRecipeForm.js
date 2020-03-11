@@ -22,46 +22,19 @@ class AddRecipeForm extends React.Component {
     }
   }
 
-  //is it possible to write one function that takes care of all changes?
-  handleChange = (e) => {
-    const { name, value } = e.target;
-    this.props.addChange(name, value);
-  };
-
+  //is it possible to write one function that takes care of all changes
+  //need to change how reducers update the store. 
   updateChange = (name, value) => {
     this.props.addChange(name, value);
-  };
-
-  //handle changes to state where it's an array
-  //figure out how to combing handle___Arr functions to make code DRY
-  handleChangeArr = (e) => {
-    const { name, value } = e.target;
-    const { type, index } = e.target.dataset; //to call for data-* custom attributes
-    this.props.addArrayChange(type, index, name, value);
   };
 
   updateChangeArr = (type, index, name, value) => {
     this.props.addArrayChange(type, index, name, value);
   };
 
-  //depending on how id is generated (if in DB), may be changing the structure of notes into a simple array. that's why it's a separate function.
-  handleChangeNotesArr = (e) => {
-    const { name, value } = e.target;
-    const { type, index } = e.target.dataset;
-
-    let newArr = JSON.parse(JSON.stringify(this.state[type]));
-    newArr[index][name] = value;
-    this.setState({
-      [type]: newArr,
-    });
-  };
-
   //figure out how to combing add___Input functions to make code DRY
   //the differences are the variables that create empty objects, maybe have them as parameters (event, newObj)
   addMoreIngredInput = () => {
-    // once this is clicked, add one more object with empty values into ingredients array state
-    //generate html <ul> options to add to the rendering - ingredientsListTemplate
-
     const ingredientsObjTemplate = { name: '', quantity: '', unit: '' }; //necessary? or better take from redux store
     this.props.addIngredInput(ingredientsObjTemplate);
   };
@@ -78,24 +51,8 @@ class AddRecipeForm extends React.Component {
     this.props.addNoteInput(noteObjTemplate);
   };
 
-  //combined addMoreNotes and addMoreSteps functions into one - not yet changed for redux.
-  addMoreInput = (e, type, template) => {
-    const refNum = [ ...this.state[type] ].length + 1;
-    const keys = Object.keys(template);
-    template[keys[0]] = refNum;
-    console.log(template);
-
-    const newArr = JSON.parse(JSON.stringify(this.state[type]));
-    newArr.push(template);
-    console.log(newArr);
-
-    this.setState({
-      [type]: newArr,
-    });
-  };
-
   handeleSubmit = (e) => {
-    e.preventDefault(); //not sure if this is necessary? keep it for now
+    e.preventDefault();
     this.props.saveRecipe(this.props.newRecipe, this.props.history);
   };
 
@@ -118,7 +75,6 @@ class AddRecipeForm extends React.Component {
             <input
               type="button"
               value="Add more steps"
-              // onClick={(e) => this.addMoreInput(e, 'procedure', { step: undefined, description: '' })}
               onClick={this.addMoreStepsInput}
             />
           </Procedure>
@@ -126,7 +82,6 @@ class AddRecipeForm extends React.Component {
             <input
               type="button"
               value="Add more notes"
-              // onClick={(e) => this.addMoreInput(e, 'notes', { id: undefined, text: '' })}
               onClick={this.addMoreNotesInput}
             />
           </Notes>
