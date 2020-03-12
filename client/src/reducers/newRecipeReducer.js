@@ -1,3 +1,5 @@
+import produce from 'immer';
+
 import {
   ADD_INGRED_INPUT,
   ADD_STEP_INPUT,
@@ -66,58 +68,72 @@ const initialState = {
 function newRecipe(state = initialState, action) {
   switch (action.type) {
     case ADD_INGRED_INPUT:
-      return {
-        ...state,
-        recipe: {
-          ...state.recipe,
-          ingredients: [ ...state.recipe.ingredients, action.payload ],
-        },
-      };
+      // return {
+      //   ...state,
+      //   recipe: {
+      //     ...state.recipe,
+      //     ingredients: [ ...state.recipe.ingredients, action.payload ],
+      //   },
+      // };
+      return produce(state, (draft) => {
+        draft.recipe.ingredients.push(action.payload);
+      });
     case ADD_STEP_INPUT:
-      return {
-        ...state,
-        recipe: {
-          ...state.recipe,
-          procedure: [ ...state.recipe.procedure, action.payload ],
-        },
-      };
+      // return {
+      //   ...state,
+      //   recipe: {
+      //     ...state.recipe,
+      //     procedure: [ ...state.recipe.procedure, action.payload ],
+      //   },
+      // };
+      return produce(state, (draft) => {
+        draft.recipe.procedure.push(action.payload);
+      });
     case ADD_NOTE_INPUT:
-      return {
-        ...state,
-        recipe: {
-          ...state.recipe,
-          notes: [ ...state.recipe.notes, action.payload ],
-        },
-      };
+      // return {
+      //   ...state,
+      //   recipe: {
+      //     ...state.recipe,
+      //     notes: [ ...state.recipe.notes, action.payload ],
+      //   },
+      // };
+      return produce(state, (draft) => {
+        draft.recipe.notes.push(action.payload);
+      });
     case ADD_CHANGE:
-      return {
-        ...state,
-        recipe: {
-          ...state.recipe,
-          [action.inputName]: action.inputValue,
-        },
-      };
-    //is there a better way to track changes rather than by character
+      // return {
+      //   ...state,
+      //   recipe: {
+      //     ...state.recipe,
+      //     [action.inputName]: action.inputValue,
+      //   },
+      // };
+      return produce(state, (draft) => {
+        draft.recipe[action.inputName] = action.inputValue;
+      });
     case ADD_ARRAY_CHANGE:
       const { inputType, inputIndex, inputName, inputValue } = action;
       //map through the part of the state  to find the key and change the value
-      const infoUpdate = { ...state }.recipe[inputType].map((item, i) => {
-        const keys = Object.keys(item);
-        if (i === parseInt(inputIndex) && keys.includes(inputName)) {
-          return {
-            ...item,
-            [inputName]: inputValue,
-          };
-        }
-        return item;
+      // const infoUpdate = { ...state }.recipe[inputType].map((item, i) => {
+      //   const keys = Object.keys(item);
+      //   if (i === parseInt(inputIndex) && keys.includes(inputName)) {
+      //     return {
+      //       ...item,
+      //       [inputName]: inputValue,
+      //     };
+      //   }
+      //   return item;
+      // });
+      // return {
+      //   ...state,
+      //   recipe: {
+      //     ...state.recipe,
+      //     [action.inputType]: infoUpdate,
+      //   },
+      // };
+      return produce(state, (draft) => {
+        draft.recipe[inputType][inputIndex][inputName] = inputValue;
       });
-      return {
-        ...state,
-        recipe: {
-          ...state.recipe,
-          [action.inputType]: infoUpdate,
-        },
-      };
     case SAVE_NEW_RECIPE_TO_SERVER_BEGIN:
       return {
         ...state,
@@ -126,13 +142,13 @@ function newRecipe(state = initialState, action) {
     case SAVE_NEW_RECIPE_TO_SERVER_SUCCESS:
       return {
         ...state,
-        recipe: {...initialState.recipe}, //immer or immutability helper? - requires deep copy
+        recipe: { ...initialState.recipe }, //immer or immutability helper? - requires deep copy
         loading: false,
       };
     case SAVE_NEW_RECIPE_TO_SERVER_FAILURE:
       return {
         ...state,
-        recipe: {...initialState.recipe},
+        recipe: { ...initialState.recipe },
         loading: false,
         error: action.payload.error,
       };
