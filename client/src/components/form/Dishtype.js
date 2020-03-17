@@ -31,17 +31,18 @@ class Dishtype extends React.Component {
 
     return (
       <div>
-        <label htmlFor="dish">Dish Type:</label>
+        <label htmlFor='dish'>Dish Type:</label>
         <input
-          name="dish"
-          list="dishTypes"
-          type="text"
-          placeholder="Dish Type"
+          required
+          name='dish'
+          list='dishTypes'
+          type='text'
+          placeholder='Dish Type'
           value={this.state.dish}
           onChange={this.onChange}
           onBlur={this.state.dish !== this.props.dish ? this.onBlur : null}
         />
-        <datalist id="dishTypes">{dishTypeOptions}</datalist>
+        <datalist id='dishTypes'>{dishTypeOptions}</datalist>
       </div>
     );
   }

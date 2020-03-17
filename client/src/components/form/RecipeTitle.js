@@ -23,11 +23,12 @@ class RecipeTitle extends React.Component {
   render() {
     return (
       <div>
-        <label htmlFor="title">Title:</label>
+        <label htmlFor='title'>Title:</label>
         <input
-          name="title"
-          type="text"
-          placeholder="Recipe Title"
+          required
+          name='title'
+          type='text'
+          placeholder='Recipe Title'
           value={this.state.title}
           onChange={this.onChange}
           onBlur={this.state.title !== this.props.title ? this.onBlur : null}

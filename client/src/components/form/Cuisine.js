@@ -31,17 +31,18 @@ class Cuisine extends React.Component {
 
     return (
       <div>
-        <label htmlFor="cuisine">Cuisine:</label>
+        <label htmlFor='cuisine'>Cuisine:</label>
         <input
-          name="cuisine"
-          list="cuisines"
-          type="text"
-          placeholder="Cuisine"
+          required
+          name='cuisine'
+          list='cuisines'
+          type='text'
+          placeholder='Cuisine'
           value={this.state.cuisine}
           onChange={this.onChange}
           onBlur={this.state.cuisine !== this.props.cuisine ? this.onBlur : null}
         />
-        <datalist id="cuisines">{cuisineOptions}</datalist>
+        <datalist id='cuisines'>{cuisineOptions}</datalist>
       </div>
     );
   }

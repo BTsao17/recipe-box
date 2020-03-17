@@ -23,7 +23,7 @@ class AddRecipeForm extends React.Component {
   }
 
   //is it possible to write one function that takes care of all changes
-  //need to change how reducers update the store. 
+  //need to change how reducers update the store.
   updateChange = (name, value) => {
     this.props.addChange(name, value);
   };
@@ -51,7 +51,7 @@ class AddRecipeForm extends React.Component {
     this.props.addNoteInput(noteObjTemplate);
   };
 
-  handeleSubmit = (e) => {
+  handleSubmit = (e) => {
     e.preventDefault();
     this.props.saveRecipe(this.props.newRecipe, this.props.history);
   };
@@ -63,29 +63,21 @@ class AddRecipeForm extends React.Component {
     return (
       <React.Fragment>
         <h1>Recipe Form</h1>
-        <form id="newRecipe">
+        <form id='newRecipe' onSubmit={this.handleSubmit}>
           <RecipeTitle title={newRecipe.title} updateChange={this.updateChange} />
           <Cuisine cuisine={newRecipe.cuisine} cuisineList={cuisines} updateChange={this.updateChange} />
           <Dishtype dish={newRecipe.dish} dishList={dishTypes} updateChange={this.updateChange} />
           <Time time={newRecipe.time} updateChange={this.updateChangeArr} />
           <Ingredients ingredients={newRecipe.ingredients} updateChange={this.updateChangeArr}>
-            <input type="button" value="Add more ingredients" onClick={this.addMoreIngredInput} />
+            <input type='button' value='Add more ingredients' onClick={this.addMoreIngredInput} />
           </Ingredients>
           <Procedure procedure={newRecipe.procedure} updateChange={this.updateChangeArr}>
-            <input
-              type="button"
-              value="Add more steps"
-              onClick={this.addMoreStepsInput}
-            />
+            <input type='button' value='Add more steps' onClick={this.addMoreStepsInput} />
           </Procedure>
           <Notes notes={newRecipe.notes} updateChange={this.updateChangeArr}>
-            <input
-              type="button"
-              value="Add more notes"
-              onClick={this.addMoreNotesInput}
-            />
+            <input type='button' value='Add more notes' onClick={this.addMoreNotesInput} />
           </Notes>
-          <button form="newRecipe" type="submit" onClick={this.handeleSubmit}>
+          <button form='newRecipe' type='submit'>
             Save Recipe
           </button>
         </form>
